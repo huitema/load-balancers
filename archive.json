@@ -1,0 +1,921 @@
+{
+  "magic": "E!vIA5L86J2I",
+  "timestamp": "2020-05-07T20:52:06.518047+00:00",
+  "repo": "quicwg/load-balancers",
+  "labels": [
+    {
+      "name": "bug",
+      "description": "Something isn't working",
+      "color": "d73a4a"
+    },
+    {
+      "name": "documentation",
+      "description": "Improvements or additions to documentation",
+      "color": "0075ca"
+    },
+    {
+      "name": "duplicate",
+      "description": "This issue or pull request already exists",
+      "color": "cfd3d7"
+    },
+    {
+      "name": "enhancement",
+      "description": "New feature or request",
+      "color": "a2eeef"
+    },
+    {
+      "name": "good first issue",
+      "description": "Good for newcomers",
+      "color": "7057ff"
+    },
+    {
+      "name": "help wanted",
+      "description": "Extra attention is needed",
+      "color": "008672"
+    },
+    {
+      "name": "invalid",
+      "description": "This doesn't seem right",
+      "color": "e4e669"
+    },
+    {
+      "name": "question",
+      "description": "Further information is requested",
+      "color": "d876e3"
+    },
+    {
+      "name": "wontfix",
+      "description": "This will not be worked on",
+      "color": "ffffff"
+    },
+    {
+      "name": "editorial",
+      "description": "",
+      "color": "fc94f8"
+    }
+  ],
+  "issues": [
+    {
+      "number": 6,
+      "id": "MDU6SXNzdWU1NzM2MjA2NDE=",
+      "title": "Setup CI",
+      "url": "https://github.com/quicwg/load-balancers/issues/6",
+      "state": "CLOSED",
+      "author": "martinthomson",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "The editor's draft and the `gh-pages` branch are currently empty.",
+      "createdAt": "2020-03-01T21:40:15Z",
+      "updatedAt": "2020-03-06T18:58:20Z",
+      "closedAt": "2020-03-06T18:58:20Z",
+      "comments": [
+        {
+          "author": "martinduke",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I believe this is resolved.",
+          "createdAt": "2020-03-06T18:58:16Z",
+          "updatedAt": "2020-03-06T18:58:16Z"
+        }
+      ]
+    },
+    {
+      "number": 7,
+      "id": "MDU6SXNzdWU1NzM2MjEwNzk=",
+      "title": "SCID acronym",
+      "url": "https://github.com/quicwg/load-balancers/issues/7",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "This is often used to mean Source Connection ID in other contexts.  A collision here is likely to cause confusion.",
+      "createdAt": "2020-03-01T21:43:26Z",
+      "updatedAt": "2020-03-09T15:54:35Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "martinduke",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Recommended name? SCCID?",
+          "createdAt": "2020-03-06T20:57:02Z",
+          "updatedAt": "2020-03-06T20:57:02Z"
+        },
+        {
+          "author": "nibanks",
+          "authorAssociation": "MEMBER",
+          "body": "I think it might just be best to call it the \"Server CID\" any other abbreviated term will get confused IMO.",
+          "createdAt": "2020-03-06T23:12:10Z",
+          "updatedAt": "2020-03-06T23:12:10Z"
+        },
+        {
+          "author": "martinduke",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "\"Server CID\" doesn't seem to fit well with \"Stream Cipher Connection ID\"",
+          "createdAt": "2020-03-09T15:21:30Z",
+          "updatedAt": "2020-03-09T15:21:40Z"
+        },
+        {
+          "author": "nibanks",
+          "authorAssociation": "MEMBER",
+          "body": "So SCID didn't mean \"Server Connection ID\"? There is definitely confusion here. I'd just recommend not abbreviating anything more than CID.",
+          "createdAt": "2020-03-09T15:33:47Z",
+          "updatedAt": "2020-03-09T15:33:47Z"
+        },
+        {
+          "author": "martinduke",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I guess this proves MT's point. \"STream Cipher Connection ID\" (just like PCID, OCID, BCID)",
+          "createdAt": "2020-03-09T15:54:35Z",
+          "updatedAt": "2020-03-09T15:54:35Z"
+        }
+      ]
+    },
+    {
+      "number": 8,
+      "id": "MDU6SXNzdWU1NzM2MjQzMDg=",
+      "title": "Unguessable connection IDs",
+      "url": "https://github.com/quicwg/load-balancers/issues/8",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "There is a requirement that it be difficult for a party other than the server and load balancer to guess a CID that will be accepted as valid for a target connection.\r\n\r\nThis requirement needs to be validated for the schemes described in the draft.  This might impose some constraints on the designs chosen.\r\n\r\nFor instance, I don't believe that the plaintext algorithm meets this goal.  The server ID can take all the available space, which is probably wrong.  Clearly it is impossible to create sufficient connection IDs for even a single connection if there is only one valid identifier per server.  However, it might be argued that even an 18 byte server ID makes it too easy to guess a valid connection ID for a connection (just 16 guesses would be enough to get a 50% chance at that).  So it seems to me that a shorter connection ID is necessary.\r\n\r\nThe same applies to any attempt at obfuscation.\r\n\r\nThe encrypted versions might be similarly challenging to get right.  The For Server Use field in the stream cipher variant needs to be sufficiently long as to avoid engineered collisions.  The value used for the stream cipher is malleable, which means that an attacker isn't prevented from guessing.  In many ways, this is more challenging than the plaintext variant because the nonce consumes space.\r\n\r\nThe zero-padding in the block cipher mode might be the best way of preventing guessing, if it were sufficiently long.  Similarly, if \"Encrypted bits for server use\" were sufficiently sparsely populated, then guessing can be hard enough.",
+      "createdAt": "2020-03-01T22:06:18Z",
+      "updatedAt": "2020-03-09T16:52:02Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "nibanks",
+          "authorAssociation": "MEMBER",
+          "body": "> There is a requirement that it be difficult for a party other than the server and load balancer to guess a CID that will be accepted as valid for a target connection.\r\n\r\n- What exactly does \"a CID that will be accepted as valid for a target connection\" mean?\r\n- What is exactly making this requirement?",
+          "createdAt": "2020-03-02T04:37:05Z",
+          "updatedAt": "2020-03-02T04:37:05Z"
+        },
+        {
+          "author": "martinthomson",
+          "authorAssociation": "MEMBER",
+          "body": "A connection ID that is accepted as valid for a target connection is any value that will cause packets to be routed to the node that serves that connection.\r\n\r\nThe transport draft [says](https://quicwg.org/base-drafts/draft-ietf-quic-transport.html#section-5.1-3):\r\n\r\n> Connection IDs MUST NOT contain any information that can be used by an external observer (that is, one that does not cooperate with the issuer) to correlate them with other connection IDs for the same connection. ",
+          "createdAt": "2020-03-02T23:30:13Z",
+          "updatedAt": "2020-03-02T23:30:13Z"
+        },
+        {
+          "author": "martinduke",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I think this issue is conflating two different things:\r\n1) Is it easy to generate a CID that has a high probability of being considered valid by the LB? For all but BCID with zero-padding, the answer is clearly \"yes\" unless the SID space is sparsely populated. But that doesn't make them valid at the server. Moreover, if I am just trying to get random packets past the LB, it's far more productive to just generate a bunch of Initials.\r\n\r\nIn the absence of an LB, all CIDs get through to the server, so I don't understand why this is a problem.\r\n\r\n2) The transport draft language (it seems to me) exists mostly to prevent linkability in migration events. Although I've mentioned several times that linkability is a continuum, it is pretty clear that PCID fails at this and OCID makes it harder but no one would bet the house on it being truly secure -- hence the name.\r\n\r\nI think we're due for an actual WG discussion on OCID, but for PCID would it be sufficient for you, MT, if we said that servers using PCID MUST use disable_migration? To be honest, I thought I had already done this but it's not there.",
+          "createdAt": "2020-03-06T21:24:55Z",
+          "updatedAt": "2020-03-06T21:24:55Z"
+        },
+        {
+          "author": "nibanks",
+          "authorAssociation": "MEMBER",
+          "body": "I really want to push back hard on any restrictions around migration for the Plaintext CID algorithm. It is by far the simplest and cheapest algorithm to support in the LB, and IMO must remain a valid option for QUIC load balancing.\r\n\r\nAs far as giving any information to an external observer, it's possible an external observer can work out the Server ID for each CID. Whether this is practically useful information depends on the number of connections being managed by the individual servers.\r\n\r\nIMO, we cannot restrict the full set of QUIC features to only work on the most complex and costly algorithms. Some solutions may never implement them.",
+          "createdAt": "2020-03-06T23:46:08Z",
+          "updatedAt": "2020-03-06T23:46:08Z"
+        },
+        {
+          "author": "martinduke",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Ah wait, I found the text in security considerations:\r\n\r\n> Servers that are running the Plaintext CID  algorithm SHOULD only use it to generate new CIDs for the Server Initial Packet and SHOULD NOT send CIDs in QUIC NEW_CONNECTION_ID frames.  Doing so might falsely suggest to the client that said CIDs were generated in a secure fashion.\r\n\r\nSo it's a SHOULD right now.",
+          "createdAt": "2020-03-09T16:52:00Z",
+          "updatedAt": "2020-03-09T16:52:00Z"
+        }
+      ]
+    },
+    {
+      "number": 9,
+      "id": "MDU6SXNzdWU1NzM2Mjc1OTE=",
+      "title": "Effect on stateless resets",
+      "url": "https://github.com/quicwg/load-balancers/issues/9",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "The draft doesn't address the impact of each method of connection ID generation on how servers can use stateless resets.\r\n\r\nMost of this is likely bound up in decisions stemming from #8.  If you can guess a valid but unused connection ID, then you might be able to induce a stateless reset that could be used to kill an open connection.\r\n\r\nAs the draft only includes methods that include an explicit server identifier, it is possible that as long as valid values cannot be guessed, the effect is minimal and each server instance can have its own configured stateless reset key (or a shared key from which a per-server key is derived using a KDF).",
+      "createdAt": "2020-03-01T22:30:24Z",
+      "updatedAt": "2020-03-06T21:07:24Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "martinduke",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I don't understand the attack here. A given CID will deterministically map to a specific server instance. So there is no way for another server to receive a packet with that CID and generate a stateless reset. What am I missing?\r\n\r\n<strike>There might be something here with the differing treatment of long-header vs. short-header packets, (and the option for servers to send resets on long headers), but I'll have to think about it more.</strike>",
+          "createdAt": "2020-03-06T21:02:55Z",
+          "updatedAt": "2020-03-06T21:07:24Z"
+        },
+        {
+          "author": "martinduke",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "As to the last point, nope: even a long header with a DCID that conforms to the server's expectations (i.e. maps to a real server) will get delivered to that server, so I don't think that's an attack.",
+          "createdAt": "2020-03-06T21:06:56Z",
+          "updatedAt": "2020-03-06T21:06:56Z"
+        }
+      ]
+    },
+    {
+      "number": 10,
+      "id": "MDU6SXNzdWU1NzM2Mjc5NTI=",
+      "title": "Moving connections between server instances",
+      "url": "https://github.com/quicwg/load-balancers/issues/10",
+      "state": "CLOSED",
+      "author": "martinthomson",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [
+        "editorial"
+      ],
+      "body": "Some text on how a server cluster might support moving of connections from one server instance to another would be useful.  The current design might permit portability under certain conditions, but there are things that might need to be considered, such as the way in stateless resets are generated.",
+      "createdAt": "2020-03-01T22:33:06Z",
+      "updatedAt": "2020-03-09T15:18:44Z",
+      "closedAt": "2020-03-09T15:18:44Z",
+      "comments": [
+        {
+          "author": "nibanks",
+          "authorAssociation": "MEMBER",
+          "body": "Are you referring to load balancing already existing connections to a new server? Are you envisioning the first server issuing new CIDs (that point to the new server) and setting Retire Prior To to retire the old CIDs so that future traffic redirect to the new server? How do you imagine the rest of the connection state would get moved?",
+          "createdAt": "2020-03-02T04:32:17Z",
+          "updatedAt": "2020-03-02T04:32:17Z"
+        },
+        {
+          "author": "martinthomson",
+          "authorAssociation": "MEMBER",
+          "body": "This applies to cases where clusters are rebalanced, where instances go down and others are expected to pick up the slack, and all similar cases.  In some cases this requires an unspecified mechanism for transferring state between instances.  In others, the instance might remain constant but the identifiers used might need to rotate.\r\n\r\nThis is likely addressed by using Retire Prior To as you say.  Text on that would help.",
+          "createdAt": "2020-03-02T23:24:25Z",
+          "updatedAt": "2020-03-02T23:24:25Z"
+        },
+        {
+          "author": "martinduke",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Good idea, it wouldn't hurt to have a short non-normative section on this.",
+          "createdAt": "2020-03-06T20:56:34Z",
+          "updatedAt": "2020-03-06T20:56:34Z"
+        }
+      ]
+    },
+    {
+      "number": 12,
+      "id": "MDU6SXNzdWU1NzQzMTUyMzE=",
+      "title": "Configuration ID might be too small",
+      "url": "https://github.com/quicwg/load-balancers/issues/12",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "As server clusters increase in size, the need to reallocate server identifiers becomes more acute. \r\n\r\nIn one model, the configuration ID is used to indicate a stable routing configuration.  Server identifiers for a given configuration ID are routed to the same server, no matter how many other instances are added or removed.  In order to allow for changes in the cluster, the configuration ID is used so that old servers can be removed from consideration and new ones added.\r\n\r\nIf these changes happen frequently enough, the number of bits allocated to identifying a configuration might be insufficient.  Why not make the length of the identifier flexible?  That might mean that you need to make the length of the length similarly configurable.",
+      "createdAt": "2020-03-02T23:28:35Z",
+      "updatedAt": "2020-03-06T20:39:11Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "martinduke",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "It was not the intent of these bits to support long-lived configurations, instead supporting key rotation, upgrades, and the like. I would much rather people overprovisioned the server ID space than using this tool, TBH.\r\n\r\nHowever, the only cost is limiting the theoretical size of CIDs. At the moment, we can support up to 64B, future-proofing the encodings against future versions of QUIC. I'm open to another bit for this, but how would a configurable number of CR bits work with multiple configurations? How does a config that needs 5 bits and one that needs 2 coexist, especially if the latter needs length self-encoding?",
+          "createdAt": "2020-03-06T20:39:11Z",
+          "updatedAt": "2020-03-06T20:39:11Z"
+        }
+      ]
+    },
+    {
+      "number": 16,
+      "id": "MDU6SXNzdWU1ODc5NDQ5Njc=",
+      "title": "Giving the client more information",
+      "url": "https://github.com/quicwg/load-balancers/issues/16",
+      "state": "OPEN",
+      "author": "martinduke",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "QUIC-LB has a bit of an incentive mismatch. The server infrastructure decides how linkable the CID algorithm is, but the client bears most of the cost of the CIDs being linkable. Worse yet, the client has no idea, without a lot of effort, what the servers are doing. Even worse, the servers have some incentives to pick something that's easily linkable.\r\n\r\nIn Section 8, it says:\r\n\r\n> Servers that are running the Plaintext CID algorithm SHOULD only use it to generate new CIDs for the Server Initial Packet and SHOULD NOT send CIDs in QUIC NEW_CONNECTION_ID frames\r\n\r\nThis is a concise way of not giving the client tools to link itself by trying an unsafe migration.\r\n\r\nWe could just stick with that. A richer way to go would be to create a new transport parameter (e.g. cid_is_linkable, cid_not_encrypted) that would explicitly communicate the risks to the client. We could have a different value for OCID or batch PCID and OCID together.\r\n",
+      "createdAt": "2020-03-25T19:41:47Z",
+      "updatedAt": "2020-03-25T19:41:47Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 20,
+      "id": "MDU6SXNzdWU2MTQyMDc4NTA=",
+      "title": "Load Balancing Invariant Longer Header Packets",
+      "url": "https://github.com/quicwg/load-balancers/issues/20",
+      "state": "OPEN",
+      "author": "nibanks",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "We've had some discussion in this area in the past, and we decided that the best way to statelessly (and consistently) load balance long header packets would be to use a hash of the UDP 4-tuple and the client's source CID; since these are the only constants for all incoming (to the server) long header packets. I have come up with a couple of problems with this approach:\r\n\r\n1. As far as I know, there is no statement in the Invariants that says these must all stay constant for all future versions of QUIC.\r\n\r\n2. Using the hash approach can only function statelessly if there is not change in the DIP configuration. If the set of servers being load balanced changes (which we must assume to be common), then whatever stateless logic you have that maps hash to DIP would also change, resulting in long header packets getting routed incorrectly most likely.\r\n\r\n3. A follow up to (2), if you assume that the long header packets cannot therefore be routed statelessly based on the hash, and state must be tracked to continue to consistently route all long header packets until they are no longer used, at what point can the LB discard this state. By design, there is no on-path signal to indicate \"long header packets are no longer used\". Any heuristic that might be added here would be affected by (1) too.\r\n\r\nBecause of these issues, I'm left scratching my head on the best way to recommend to LBs on how to load balance invariant long header packets. The best thing I can think of is:\r\n\r\n- Use the hash mentioned above, but maintain state for each flow (tuple+client_cid).\r\n- Reset a timer (5 sec? 10 sec? 30 sec?) after each new packet is received for the flow. Discard the state when the timer fires.\r\n\r\nBecause the client's CID is included in the flow calculation, it allows an attacker to create nearly unlimited number of flow states on the LB. You might argue that Retry could be first used by a (cooperating) DoS appliance to first validate source address, but after that is done, this attack can still be executed. It would then require some heuristics on the LB to protect against.\r\n\r\n@martinduke @martinthomson any ideas here? ",
+      "createdAt": "2020-05-07T17:00:47Z",
+      "updatedAt": "2020-05-07T20:17:45Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "nibanks",
+          "authorAssociation": "MEMBER",
+          "body": "Another, simpler option is just to say live with the disruption of doing things statelessly. Only connections in the second round trip of the handshake would be affected (depending on loss). It's a fairly small window of time, compared to the lifetime of connections. But the clients that do get dropped have a really bad experience, because there will be no stateless reset to immediately kill their connection. They'd have to wait for a timeout.",
+          "createdAt": "2020-05-07T17:05:05Z",
+          "updatedAt": "2020-05-07T17:05:05Z"
+        },
+        {
+          "author": "udippant",
+          "authorAssociation": "NONE",
+          "body": "Re (2) - that problem exists for TCP as well. I.e. if you route an incoming TCP connection from a  stateless L4LB to backend servers based on 4-tuple hash, any change in number of backend servers can result in the routing of subsequent packets for the same flow to a different backend server.\r\n\r\nUsing LRU cache for such connection table in L4LB has been a convenient way to address this issue for us ( for >99% of the flows). You may need to tune parameters such as size and TTL for items in the table to your needs. \r\nAlso, a pre-configured upper bound to limit the size of the connection table should address the concern you mentioned regarding exposure to attack vector of unlimited states in L4LB. \r\n\r\nFinally, even for LongHeader packets, packets of type 'Handshake' echo back the \"destination connection id' chosen by the server. So you can use similar logic to route these LongHeader sub-types as you use to route ShortHeader packets if the servers and L4Lb cooperatively choose the 'destination connection Id' [for e.g. as @martinduke  proposed].",
+          "createdAt": "2020-05-07T18:39:41Z",
+          "updatedAt": "2020-05-07T18:39:41Z"
+        },
+        {
+          "author": "nibanks",
+          "authorAssociation": "MEMBER",
+          "body": "Yeah, a LRU cache is a good solution. The difference between TCP and QUIC here is that TCP provides on path signals the LB can use to clean up state, but QUIC doesn't provide any. So, it' is purely a LRU + some timer.\r\n\r\nAlso, I'm looking for an invariant solution to routing packets. The fact that Handshake packets are similar to Short header packets assumes too much about the per-version semantics.",
+          "createdAt": "2020-05-07T18:55:28Z",
+          "updatedAt": "2020-05-07T18:55:28Z"
+        },
+        {
+          "author": "martinduke",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "The draft already addresses this issue in Section 4.\r\n\r\nExcept for some Initial and 0RTT packets, all DCIDs are server generated and so there is no routing problem.\r\n\r\nFor Initial/0RTT, the DCID might turn out to be routable (e.g. it came from a Retry). If not, it is a \"non-compliant DCID\" which is dropped if it's in a short header. If it's a long header:\r\n\r\n> Load balancers MUST forward packets with long headers with non-compliant DCIDs to an active server using an algorithm of its own choosing. It need not coordinate this algorithm with the servers. The algorithm SHOULD be deterministic over short time scales so that related packets go to the same server.\r\n\r\nThis approach is designed to be version-invariant. I suppose a later version could drastically lengthen the time that non-server-generated CIDs were used, but I don't see why they would. The time scale till we get a server-generated CID is quite small, and if somehow the hash still messes up, the only affect is that 0RTT packets get sprayed where they aren't useful. I'm not too worried about that. Ultimately, if neither CID nor UDP tuple is stable, I don't know how you even map the packet to a connection independently of the load balancer problem.",
+          "createdAt": "2020-05-07T19:42:02Z",
+          "updatedAt": "2020-05-07T19:42:02Z"
+        },
+        {
+          "author": "nibanks",
+          "authorAssociation": "MEMBER",
+          "body": "If we want a version-invariant solution (which is my immediate goal), we can't special case any of the long header packets based on type (Initial, Handshake, 0-RTT).\r\n\r\nBut, either way, @martinduke it sounds like you're in the boat of \"do it stateless and live with the (hopefully small) consequences\"?",
+          "createdAt": "2020-05-07T19:50:52Z",
+          "updatedAt": "2020-05-07T19:50:52Z"
+        },
+        {
+          "author": "martinduke",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Yes, I am on team stateless.\r\n\r\nWe don't need to process the packet subtype (Initial, Handshake, 0RTT). The QUIC-LB language just talks about long headers. There are some embedded assumptions: specifically, that client-generated DCIDs aren't around for a long time, and are only in long headers.\r\n\r\nI do think you're raised a point that we should explicity express our assumptions about version invariance. There are a few pathological things future versions could to to make the CID encoding fail: extremely small max CID lengths, client-generated CIDs in short headers, very long intervals before switching to server-generated CIDs, etc.\r\n\r\nMoreover, the LB requirement to use some algorithm that is invariant over small time scales raises some questions. How is the implementer to know if QUICv2 will allow the client first flight to have a consistent DCID but wildly varying SCIDs or UDP src ports? Or consistent SCID but randomized DCID?\r\n\r\nI'll write up a section to discuss these concerns, but I think we should just write them down and shrug.",
+          "createdAt": "2020-05-07T20:04:56Z",
+          "updatedAt": "2020-05-07T20:04:56Z"
+        },
+        {
+          "author": "nibanks",
+          "authorAssociation": "MEMBER",
+          "body": "Does the invariants ever state that the tuple can't change during the handshake? If that's allowed in the future, the first packet could be from one tuple with the client chosen CID, then the next could be from a new tuple, with the server chosen CID...",
+          "createdAt": "2020-05-07T20:13:00Z",
+          "updatedAt": "2020-05-07T20:13:00Z"
+        },
+        {
+          "author": "martinduke",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "It does not. If we feel strongly that something is likely to not remain constant in some future version of QUIC, we can recommend it that LBs not use it in their algorithm. If not, we should just note the assumption and move on.",
+          "createdAt": "2020-05-07T20:17:45Z",
+          "updatedAt": "2020-05-07T20:17:45Z"
+        }
+      ]
+    }
+  ],
+  "pulls": [
+    {
+      "number": 1,
+      "id": "MDExOlB1bGxSZXF1ZXN0MzgwNTMzMjM2",
+      "title": "Deleted leftover reference to config method",
+      "url": "https://github.com/quicwg/load-balancers/pull/1",
+      "state": "MERGED",
+      "author": "martinduke",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "This fixes an issue from the private repo:\r\nhttps://github.com/martinduke/draft-duke-quic-load-balancers/issues/63\r\n",
+      "createdAt": "2020-02-26T22:11:23Z",
+      "updatedAt": "2020-02-28T20:30:42Z",
+      "closedAt": "2020-02-28T20:30:41Z",
+      "mergedAt": "2020-02-28T20:30:41Z",
+      "mergedBy": "martinduke",
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MzY1Mzg0NzA3",
+          "commit": {
+            "abbreviatedOid": "c4292b9"
+          },
+          "author": "nibanks",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2020-02-27T02:52:35Z",
+          "updatedAt": "2020-02-27T02:52:35Z",
+          "comments": []
+        }
+      ],
+      "baseRepository": "quicwg/load-balancers",
+      "baseRefName": "master",
+      "baseRefOid": "568bfa12852a731f9c757ec6878f52e2c8319774",
+      "headRepository": "quicwg/load-balancers",
+      "headRefName": "mduke-cleanup-config-method",
+      "headRefOid": "c4292b9a5a13b4474678860eb24c30bc7c6b0bea",
+      "mergeCommit": {
+        "oid": "ee1de5bcac2628e6bef279e0cfff5475f6d6a39f"
+      }
+    },
+    {
+      "number": 2,
+      "id": "MDExOlB1bGxSZXF1ZXN0MzgwNTk0ODc0",
+      "title": "Light edit of Retry Services section",
+      "url": "https://github.com/quicwg/load-balancers/pull/2",
+      "state": "MERGED",
+      "author": "martinduke",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Fixes https://github.com/martinduke/draft-duke-quic-load-balancers/issues/60",
+      "createdAt": "2020-02-27T01:49:16Z",
+      "updatedAt": "2020-03-02T16:01:06Z",
+      "closedAt": "2020-03-02T16:01:05Z",
+      "mergedAt": "2020-03-02T16:01:04Z",
+      "mergedBy": "martinduke",
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MzY1Mzg1MjU2",
+          "commit": {
+            "abbreviatedOid": "a46ef71"
+          },
+          "author": "nibanks",
+          "authorAssociation": "MEMBER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-02-27T02:54:35Z",
+          "updatedAt": "2020-02-27T02:56:33Z",
+          "comments": [
+            {
+              "originalPosition": 23,
+              "body": "Maybe something more like \"may lead to increased load on the server\".",
+              "createdAt": "2020-02-27T02:54:36Z",
+              "updatedAt": "2020-02-28T23:11:39Z"
+            },
+            {
+              "originalPosition": 4,
+              "body": "Why was this removed?",
+              "createdAt": "2020-02-27T02:56:26Z",
+              "updatedAt": "2020-02-28T23:11:39Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MzY2NzM1NzY2",
+          "commit": {
+            "abbreviatedOid": "a46ef71"
+          },
+          "author": "martinduke",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-02-28T23:05:26Z",
+          "updatedAt": "2020-02-28T23:05:26Z",
+          "comments": [
+            {
+              "originalPosition": 23,
+              "body": "I prefer the more concise sentence.",
+              "createdAt": "2020-02-28T23:05:26Z",
+              "updatedAt": "2020-02-28T23:11:39Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MzY2NzM2OTgw",
+          "commit": {
+            "abbreviatedOid": "a46ef71"
+          },
+          "author": "martinduke",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-02-28T23:09:20Z",
+          "updatedAt": "2020-02-28T23:09:21Z",
+          "comments": [
+            {
+              "originalPosition": 4,
+              "body": "I was going to rewrite this to allow Retry services to drop 0RTT too, and then realized that this line allows unlimited packets from attackers if they are non-initial, non-0RTT.\r\n\r\nThis seemed bad, but now I see that because short packets could very easily involve a CID or IP address change, there is no way for the service to filter them effectively. I'll restore it.",
+              "createdAt": "2020-02-28T23:09:20Z",
+              "updatedAt": "2020-02-28T23:11:39Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MzY2OTQ3MjQz",
+          "commit": {
+            "abbreviatedOid": "7a5babf"
+          },
+          "author": "nibanks",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2020-03-02T04:39:49Z",
+          "updatedAt": "2020-03-02T04:39:49Z",
+          "comments": []
+        }
+      ],
+      "baseRepository": "quicwg/load-balancers",
+      "baseRefName": "master",
+      "baseRefOid": "568bfa12852a731f9c757ec6878f52e2c8319774",
+      "headRepository": "quicwg/load-balancers",
+      "headRefName": "mduke-new-retry-format",
+      "headRefOid": "7a5babfd370bba3bb55be009e9a1384cd4293ea6",
+      "mergeCommit": {
+        "oid": "589d0a45e47f1bc49a67742e6ead64f3fd58d2bf"
+      }
+    },
+    {
+      "number": 3,
+      "id": "MDExOlB1bGxSZXF1ZXN0MzgwNjAyNTM3",
+      "title": "Explain how load balancer chains might work",
+      "url": "https://github.com/quicwg/load-balancers/pull/3",
+      "state": "MERGED",
+      "author": "martinduke",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "resolves https://github.com/martinduke/draft-duke-quic-load-balancers/issues/61\r\n\r\n(also added the changelog for this draft version)",
+      "createdAt": "2020-02-27T02:22:25Z",
+      "updatedAt": "2020-02-28T23:03:13Z",
+      "closedAt": "2020-02-28T23:03:12Z",
+      "mergedAt": "2020-02-28T23:03:12Z",
+      "mergedBy": "martinduke",
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MzY1Mzg1OTM0",
+          "commit": {
+            "abbreviatedOid": "ff56b1c"
+          },
+          "author": "nibanks",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2020-02-27T02:57:14Z",
+          "updatedAt": "2020-02-27T02:57:14Z",
+          "comments": []
+        }
+      ],
+      "baseRepository": "quicwg/load-balancers",
+      "baseRefName": "master",
+      "baseRefOid": "568bfa12852a731f9c757ec6878f52e2c8319774",
+      "headRepository": "quicwg/load-balancers",
+      "headRefName": "mduke-multi-tier",
+      "headRefOid": "ff56b1cc73c8db1cb98d4007e0adf6bf75e20a52",
+      "mergeCommit": {
+        "oid": "bc77d7d6891cc91c53a76b102dab739cf62cd5f1"
+      }
+    },
+    {
+      "number": 4,
+      "id": "MDExOlB1bGxSZXF1ZXN0MzgwNjEwODM3",
+      "title": "Update readme title",
+      "url": "https://github.com/quicwg/load-balancers/pull/4",
+      "state": "CLOSED",
+      "author": "nibanks",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2020-02-27T02:59:28Z",
+      "updatedAt": "2020-03-02T04:40:06Z",
+      "closedAt": "2020-03-01T16:49:00Z",
+      "mergedAt": null,
+      "mergedBy": null,
+      "comments": [
+        {
+          "author": "martinduke",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "#5 is a broader fix to conform to the new format.",
+          "createdAt": "2020-02-28T23:46:08Z",
+          "updatedAt": "2020-02-28T23:46:08Z"
+        }
+      ],
+      "reviews": [],
+      "baseRepository": "quicwg/load-balancers",
+      "baseRefName": "master",
+      "baseRefOid": "568bfa12852a731f9c757ec6878f52e2c8319774",
+      "headRepository": "quicwg/load-balancers",
+      "headRefName": "nibanks/update-readme",
+      "headRefOid": "1ebc02923d300893d672b4bed87835f2fd37ea53",
+      "mergeCommit": null
+    },
+    {
+      "number": 5,
+      "id": "MDExOlB1bGxSZXF1ZXN0MzgxNjQ4ODM0",
+      "title": "Conform README and CONTRIBUTING to WG standard",
+      "url": "https://github.com/quicwg/load-balancers/pull/5",
+      "state": "MERGED",
+      "author": "martinduke",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2020-02-28T23:43:59Z",
+      "updatedAt": "2020-03-01T16:48:35Z",
+      "closedAt": "2020-03-01T16:48:34Z",
+      "mergedAt": "2020-03-01T16:48:34Z",
+      "mergedBy": "martinduke",
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MzY2NzU0NzAx",
+          "commit": {
+            "abbreviatedOid": "1a3b462"
+          },
+          "author": "nibanks",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2020-02-29T00:20:33Z",
+          "updatedAt": "2020-02-29T00:20:33Z",
+          "comments": []
+        }
+      ],
+      "baseRepository": "quicwg/load-balancers",
+      "baseRefName": "master",
+      "baseRefOid": "bc77d7d6891cc91c53a76b102dab739cf62cd5f1",
+      "headRepository": "quicwg/load-balancers",
+      "headRefName": "mduke-fix-readme",
+      "headRefOid": "1a3b46205dc5bb05d9d9a3deb71cbb758b51e295",
+      "mergeCommit": {
+        "oid": "37d829da4b7f99bfabe89c75432016065af9abda"
+      }
+    },
+    {
+      "number": 11,
+      "id": "MDExOlB1bGxSZXF1ZXN0MzgyNTk2ODE3",
+      "title": "Import circle config from base-drafts",
+      "url": "https://github.com/quicwg/load-balancers/pull/11",
+      "state": "MERGED",
+      "author": "martinduke",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "I copied over the circle .yaml file from base-drafts, then commented out the \"push to datatracker\" bit because I'm afraid I'll do it by accident, and am happy to do that part manually.",
+      "createdAt": "2020-03-02T20:40:11Z",
+      "updatedAt": "2020-03-03T00:46:48Z",
+      "closedAt": "2020-03-03T00:46:47Z",
+      "mergedAt": "2020-03-03T00:46:47Z",
+      "mergedBy": "martinduke",
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MzY3NjIzNjI3",
+          "commit": {
+            "abbreviatedOid": "0edcc9d"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "This is fine, but you should just copy directly from the template with no changes.",
+          "createdAt": "2020-03-03T00:18:04Z",
+          "updatedAt": "2020-03-03T00:18:32Z",
+          "comments": [
+            {
+              "originalPosition": 55,
+              "body": "Why comment this out?",
+              "createdAt": "2020-03-03T00:18:04Z",
+              "updatedAt": "2020-03-03T00:45:55Z"
+            }
+          ]
+        }
+      ],
+      "baseRepository": "quicwg/load-balancers",
+      "baseRefName": "master",
+      "baseRefOid": "589d0a45e47f1bc49a67742e6ead64f3fd58d2bf",
+      "headRepository": "quicwg/load-balancers",
+      "headRefName": "fix-circle-config",
+      "headRefOid": "51766b0ac942c74206310bebbc57d67ad6f93a41",
+      "mergeCommit": {
+        "oid": "20f2e030b00b6be05b416135e52e38afe18fae36"
+      }
+    },
+    {
+      "number": 13,
+      "id": "MDExOlB1bGxSZXF1ZXN0Mzg0NjU2MzI0",
+      "title": "Test vectors",
+      "url": "https://github.com/quicwg/load-balancers/pull/13",
+      "state": "MERGED",
+      "author": "martinduke",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "I wrote some code to generate these CIDs and then extract the SID back. It's self-consistent, at least.",
+      "createdAt": "2020-03-06T06:28:38Z",
+      "updatedAt": "2020-03-09T14:58:49Z",
+      "closedAt": "2020-03-09T14:58:48Z",
+      "mergedAt": "2020-03-09T14:58:48Z",
+      "mergedBy": "martinduke",
+      "comments": [
+        {
+          "author": "martinduke",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Resolves https://github.com/martinduke/draft-duke-quic-load-balancers/issues/62\r\n",
+          "createdAt": "2020-03-06T06:29:22Z",
+          "updatedAt": "2020-03-06T06:29:22Z"
+        },
+        {
+          "author": "martinduke",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I goofed with git, which created the \"revert.\" But I assure you the changes are still in there.",
+          "createdAt": "2020-03-06T06:31:08Z",
+          "updatedAt": "2020-03-06T06:31:08Z"
+        }
+      ],
+      "reviews": [],
+      "baseRepository": "quicwg/load-balancers",
+      "baseRefName": "master",
+      "baseRefOid": "42ad253c3f510a555b1c8d9b71342748c78dee8b",
+      "headRepository": "quicwg/load-balancers",
+      "headRefName": "test-vectors",
+      "headRefOid": "302b1ae86f97faa3227832676ac524ebf243fe34",
+      "mergeCommit": {
+        "oid": "359dcc9d819c90277123262b33a9ab2a117829c9"
+      }
+    },
+    {
+      "number": 14,
+      "id": "MDExOlB1bGxSZXF1ZXN0Mzg1MDQ4MzIz",
+      "title": "added language about server connection migration",
+      "url": "https://github.com/quicwg/load-balancers/pull/14",
+      "state": "MERGED",
+      "author": "martinduke",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Intended to resolve #10.",
+      "createdAt": "2020-03-06T22:25:03Z",
+      "updatedAt": "2020-03-09T15:18:45Z",
+      "closedAt": "2020-03-09T15:18:44Z",
+      "mergedAt": "2020-03-09T15:18:44Z",
+      "mergedBy": "martinduke",
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MzcwNjgwMzAy",
+          "commit": {
+            "abbreviatedOid": "3e3bf5c"
+          },
+          "author": "nibanks",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2020-03-06T23:09:50Z",
+          "updatedAt": "2020-03-06T23:10:35Z",
+          "comments": [
+            {
+              "originalPosition": 25,
+              "body": "Mention that the Retire Prior To field would be set to retire the previous CIDs.",
+              "createdAt": "2020-03-06T23:09:51Z",
+              "updatedAt": "2020-03-09T15:16:30Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MzcwOTI1NDcy",
+          "commit": {
+            "abbreviatedOid": "3e3bf5c"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "MEMBER",
+          "state": "COMMENTED",
+          "body": "Seems fine.",
+          "createdAt": "2020-03-09T05:36:32Z",
+          "updatedAt": "2020-03-09T05:36:32Z",
+          "comments": []
+        }
+      ],
+      "baseRepository": "quicwg/load-balancers",
+      "baseRefName": "master",
+      "baseRefOid": "42ad253c3f510a555b1c8d9b71342748c78dee8b",
+      "headRepository": "quicwg/load-balancers",
+      "headRefName": "edge-cases",
+      "headRefOid": "532dd1adfd11dde3fc4749aca9f2ce3d9ade9ad7",
+      "mergeCommit": {
+        "oid": "a03dbcc7f0040b32bfbe0a757400fdf88fd37a45"
+      }
+    },
+    {
+      "number": 15,
+      "id": "MDExOlB1bGxSZXF1ZXN0Mzg1NzA3ODI2",
+      "title": "Fix obsolete references/terminology",
+      "url": "https://github.com/quicwg/load-balancers/pull/15",
+      "state": "MERGED",
+      "author": "martinduke",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "I found some text that still references the in-band protocol mechanisms.\r\n\r\nI tried to update terminology here (and in Security Considerations) without changing any design decisions, so that we can bracket those discussions.\r\n\r\nIn particular, #12 would change the intent of the config-rotation bits that we are trying to enforce here. This also touches the normative text about PCID that is the subject of #8, though I believe this PR  doesn't apply any change to the status quo.",
+      "createdAt": "2020-03-09T17:06:02Z",
+      "updatedAt": "2020-03-12T14:20:10Z",
+      "closedAt": "2020-03-12T14:20:09Z",
+      "mergedAt": "2020-03-12T14:20:09Z",
+      "mergedBy": "martinduke",
+      "comments": [],
+      "reviews": [],
+      "baseRepository": "quicwg/load-balancers",
+      "baseRefName": "master",
+      "baseRefOid": "a03dbcc7f0040b32bfbe0a757400fdf88fd37a45",
+      "headRepository": "quicwg/load-balancers",
+      "headRefName": "mduke-nits",
+      "headRefOid": "bb9956293162aa250a8d872e43acacf70d20ecfa",
+      "mergeCommit": {
+        "oid": "4a6936b1faf9de4af6a6fc62257d64ce92a13c12"
+      }
+    },
+    {
+      "number": 17,
+      "id": "MDExOlB1bGxSZXF1ZXN0NDExNzMyODU5",
+      "title": "Fixed text vector line breaks",
+      "url": "https://github.com/quicwg/load-balancers/pull/17",
+      "state": "MERGED",
+      "author": "martinduke",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2020-04-30T17:29:45Z",
+      "updatedAt": "2020-04-30T18:47:27Z",
+      "closedAt": "2020-04-30T18:47:25Z",
+      "mergedAt": "2020-04-30T18:47:25Z",
+      "mergedBy": "martinduke",
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDAzNzQ0NTk5",
+          "commit": {
+            "abbreviatedOid": "d528354"
+          },
+          "author": "nibanks",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "LGTM \ud83d\udc4d",
+          "createdAt": "2020-04-30T17:48:08Z",
+          "updatedAt": "2020-04-30T17:48:08Z",
+          "comments": []
+        }
+      ],
+      "baseRepository": "quicwg/load-balancers",
+      "baseRefName": "master",
+      "baseRefOid": "4a6936b1faf9de4af6a6fc62257d64ce92a13c12",
+      "headRepository": "quicwg/load-balancers",
+      "headRefName": "vector-line-breaks",
+      "headRefOid": "2d751c57c91fd45be789cb524047bf1e2f7adfd3",
+      "mergeCommit": {
+        "oid": "98fe4b33b709f24b57b882ef1e2438bffaa8c47e"
+      }
+    },
+    {
+      "number": 18,
+      "id": "MDExOlB1bGxSZXF1ZXN0NDExNzc5MzI1",
+      "title": "different line breaks",
+      "url": "https://github.com/quicwg/load-balancers/pull/18",
+      "state": "MERGED",
+      "author": "martinduke",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2020-04-30T19:04:09Z",
+      "updatedAt": "2020-04-30T19:04:39Z",
+      "closedAt": "2020-04-30T19:04:38Z",
+      "mergedAt": "2020-04-30T19:04:38Z",
+      "mergedBy": "martinduke",
+      "comments": [],
+      "reviews": [],
+      "baseRepository": "quicwg/load-balancers",
+      "baseRefName": "master",
+      "baseRefOid": "98fe4b33b709f24b57b882ef1e2438bffaa8c47e",
+      "headRepository": "quicwg/load-balancers",
+      "headRefName": "line-break-2",
+      "headRefOid": "c430fe0be5e81804377f41b8ff2927557d301bb7",
+      "mergeCommit": {
+        "oid": "85e0cbaa5d4749596d185c6b3e2a65230c726c04"
+      }
+    },
+    {
+      "number": 19,
+      "id": "MDExOlB1bGxSZXF1ZXN0NDEyMzg0NzE5",
+      "title": "chose a different word",
+      "url": "https://github.com/quicwg/load-balancers/pull/19",
+      "state": "MERGED",
+      "author": "martinduke",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "this is mostly to test I've fixed some integration issues.",
+      "createdAt": "2020-05-02T02:06:27Z",
+      "updatedAt": "2020-05-02T02:06:40Z",
+      "closedAt": "2020-05-02T02:06:39Z",
+      "mergedAt": "2020-05-02T02:06:39Z",
+      "mergedBy": "martinduke",
+      "comments": [],
+      "reviews": [],
+      "baseRepository": "quicwg/load-balancers",
+      "baseRefName": "master",
+      "baseRefOid": "85e0cbaa5d4749596d185c6b3e2a65230c726c04",
+      "headRepository": "quicwg/load-balancers",
+      "headRefName": "nit",
+      "headRefOid": "ab696021278a487e9520f0b330ae6d79d4ec67df",
+      "mergeCommit": {
+        "oid": "38132cf34147a0aa66b0b462f935317b5cb289f1"
+      }
+    }
+  ]
+}
