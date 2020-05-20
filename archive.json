@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2020-05-07T20:52:06.518047+00:00",
+  "timestamp": "2020-05-20T22:57:59.607174+00:00",
   "repo": "quicwg/load-balancers",
   "labels": [
     {
@@ -306,7 +306,7 @@
       "labels": [],
       "body": "We've had some discussion in this area in the past, and we decided that the best way to statelessly (and consistently) load balance long header packets would be to use a hash of the UDP 4-tuple and the client's source CID; since these are the only constants for all incoming (to the server) long header packets. I have come up with a couple of problems with this approach:\r\n\r\n1. As far as I know, there is no statement in the Invariants that says these must all stay constant for all future versions of QUIC.\r\n\r\n2. Using the hash approach can only function statelessly if there is not change in the DIP configuration. If the set of servers being load balanced changes (which we must assume to be common), then whatever stateless logic you have that maps hash to DIP would also change, resulting in long header packets getting routed incorrectly most likely.\r\n\r\n3. A follow up to (2), if you assume that the long header packets cannot therefore be routed statelessly based on the hash, and state must be tracked to continue to consistently route all long header packets until they are no longer used, at what point can the LB discard this state. By design, there is no on-path signal to indicate \"long header packets are no longer used\". Any heuristic that might be added here would be affected by (1) too.\r\n\r\nBecause of these issues, I'm left scratching my head on the best way to recommend to LBs on how to load balance invariant long header packets. The best thing I can think of is:\r\n\r\n- Use the hash mentioned above, but maintain state for each flow (tuple+client_cid).\r\n- Reset a timer (5 sec? 10 sec? 30 sec?) after each new packet is received for the flow. Discard the state when the timer fires.\r\n\r\nBecause the client's CID is included in the flow calculation, it allows an attacker to create nearly unlimited number of flow states on the LB. You might argue that Retry could be first used by a (cooperating) DoS appliance to first validate source address, but after that is done, this attack can still be executed. It would then require some heuristics on the LB to protect against.\r\n\r\n@martinduke @martinthomson any ideas here? ",
       "createdAt": "2020-05-07T17:00:47Z",
-      "updatedAt": "2020-05-07T20:17:45Z",
+      "updatedAt": "2020-05-08T01:39:43Z",
       "closedAt": null,
       "comments": [
         {
@@ -364,6 +364,48 @@
           "body": "It does not. If we feel strongly that something is likely to not remain constant in some future version of QUIC, we can recommend it that LBs not use it in their algorithm. If not, we should just note the assumption and move on.",
           "createdAt": "2020-05-07T20:17:45Z",
           "updatedAt": "2020-05-07T20:17:45Z"
+        },
+        {
+          "author": "martinthomson",
+          "authorAssociation": "MEMBER",
+          "body": "There is a question here as to whether this is invariant, but here we go...\r\n\r\nThe goal is to route on the basis of connection ID as much as possible.  But you don't always have an existing mapping.  That might be because you don't know if the connection ID was generated locally, or because you know for certain that it wasn't.  In those cases, the only thing you have to fall back on is the addressing information.  So as Udip says, keeping a cache of flows for those packets you can't recognize is sensible.\r\n\r\nIn reading this, I was thinking \"what can the invariants draft say about this?\"  And it seems like there is something we could say here.\r\n\r\nRight now, when you get a packet, there is some uncertainty about whether the destination connection ID is one of yours.  That is pretty much unavoidable for the long header, unless we create a new invariant way of signaling this (which I don't think we will do).  However, for the short header, I think we could say, definitively, that the connection ID is one that the destination server has selected.  That might help load balancers in this situation.  From my reading of this thread, it seems like this property was assumed throughout, but I realize that we never wrote that down.\r\n\r\n(You can avoid relying on this property by making your connection IDs self-authenticating, but you always have to suffer some false-positive chance, as the amount of data is pretty low.)\r\n\r\n",
+          "createdAt": "2020-05-07T23:23:54Z",
+          "updatedAt": "2020-05-07T23:24:58Z"
+        },
+        {
+          "author": "nibanks",
+          "authorAssociation": "MEMBER",
+          "body": "Ideally, we'd want the following promises from the Invariants:\r\n\r\n- Short header packets always use your chosen CID\r\n- Long header packets never change UDP 4-tuple\r\n- Long header packets from the client have a constant source CID",
+          "createdAt": "2020-05-07T23:44:44Z",
+          "updatedAt": "2020-05-07T23:44:44Z"
+        },
+        {
+          "author": "martinduke",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Only 1 client-chosen server CID per connection would be sufficient as well,\nI think.\n\nFor packets that contain a client-chosen server CID, we need the LBs to\nhave something consistent to grab on to: this could be any combination of\nUDP address/port\nsource CID\ndestination CID.\n\nif any of these become invariant, we can tell LBs to use it exclusively\nwhen handling non-compliant DCIDs.\n\nOn Thu, May 7, 2020 at 4:44 PM Nick Banks <notifications@github.com> wrote:\n\n> Ideally, we'd want the following promises from the Invariants:\n>\n>    - Short header packets always use your chosen CID\n>    - Long header packets never change UDP 4-tuple\n>    - Long header packets from the client have a constant source CID\n>\n> \u2014\n> You are receiving this because you were mentioned.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/quicwg/load-balancers/issues/20#issuecomment-625551885>,\n> or unsubscribe\n> <https://github.com/notifications/unsubscribe-auth/AF2EYELEB2R2HHAFAP7RP23RQNBXRANCNFSM4M3P2FKA>\n> .\n>\n",
+          "createdAt": "2020-05-07T23:49:22Z",
+          "updatedAt": "2020-05-07T23:49:22Z"
+        },
+        {
+          "author": "martinthomson",
+          "authorAssociation": "MEMBER",
+          "body": "> Only 1 client-chosen server CID per connection would be sufficient as well, I think.\r\n\r\nThis is on the basis that the load balancer can route based on the destination connection ID always.  I think that is right.  And it might be my preferred option.  The list of asks increases if you don't have that, as Nick points out.",
+          "createdAt": "2020-05-07T23:55:11Z",
+          "updatedAt": "2020-05-07T23:55:11Z"
+        },
+        {
+          "author": "martinduke",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Martin, the PR has a pretty good list of relevant things that are not quite\nguaranteed by the invariants draft. We don\u2019t have to have them all but if\nany are oversights please put them in.\n\nOn Thu, May 7, 2020 at 4:55 PM Martin Thomson <notifications@github.com>\nwrote:\n\n> Only 1 client-chosen server CID per connection would be sufficient as\n> well, I think.\n>\n> This is on the basis that the load balancer can route based on the\n> destination connection ID always. I think that is right. And it might be my\n> preferred option. The list of asks increases if you don't have that, as\n> Nick points out.\n>\n> \u2014\n> You are receiving this because you were mentioned.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/quicwg/load-balancers/issues/20#issuecomment-625554775>,\n> or unsubscribe\n> <https://github.com/notifications/unsubscribe-auth/AF2EYENL4IYYE5PUFJ7LAWDRQNC6XANCNFSM4M3P2FKA>\n> .\n>\n",
+          "createdAt": "2020-05-08T01:20:13Z",
+          "updatedAt": "2020-05-08T01:20:13Z"
+        },
+        {
+          "author": "huitema",
+          "authorAssociation": "NONE",
+          "body": "In V1, we do assume that the addresses and ports will remain constant during the handshake. That means we can hash or route long header messages with the \"non-compliant DCID\" based on the combination of addresses, ports, SCID and DCID. This has an interesting robustness property: Initial packets sent by different parties will be routed to different contexts, even if the SCID and DCIDs collide -- either by mistake or intentionally. We may think of relaxing the rule in a future version and allow addresses to change during handshake, but I would not like losing the current robustness.",
+          "createdAt": "2020-05-08T01:38:58Z",
+          "updatedAt": "2020-05-08T01:39:43Z"
         }
       ]
     }
@@ -916,6 +958,114 @@
       "mergeCommit": {
         "oid": "38132cf34147a0aa66b0b462f935317b5cb289f1"
       }
+    },
+    {
+      "number": 21,
+      "id": "MDExOlB1bGxSZXF1ZXN0NDE0OTE0OTg1",
+      "title": "Add discussion of QUIC invariants",
+      "url": "https://github.com/quicwg/load-balancers/pull/21",
+      "state": "MERGED",
+      "author": "martinduke",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Somewhat obliquely, this addresses #20.\r\n\r\n",
+      "createdAt": "2020-05-07T20:55:43Z",
+      "updatedAt": "2020-05-14T02:26:46Z",
+      "baseRepository": "quicwg/load-balancers",
+      "baseRefName": "master",
+      "baseRefOid": "38132cf34147a0aa66b0b462f935317b5cb289f1",
+      "headRepository": "quicwg/load-balancers",
+      "headRefName": "invariants",
+      "headRefOid": "4e3d9c0ad9086dacf6d58854e9e3aa595e8a28b4",
+      "closedAt": "2020-05-14T02:26:45Z",
+      "mergedAt": "2020-05-14T02:26:45Z",
+      "mergedBy": "martinduke",
+      "mergeCommit": {
+        "oid": "09a09252204907901f4fdb8b8055dfb091bab5e2"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDA3ODM3Mjk4",
+          "commit": {
+            "abbreviatedOid": "4e3d9c0"
+          },
+          "author": "nibanks",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "LGTM \ud83d\udc4d",
+          "createdAt": "2020-05-07T21:06:52Z",
+          "updatedAt": "2020-05-07T21:06:52Z",
+          "comments": []
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDA3OTAzMDg0",
+          "commit": {
+            "abbreviatedOid": "4e3d9c0"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "MEMBER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-05-07T23:27:36Z",
+          "updatedAt": "2020-05-08T02:14:52Z",
+          "comments": [
+            {
+              "originalPosition": 68,
+              "body": "We might be able to move this into invariants, as I mentioned on the issue.  WDYT?",
+              "createdAt": "2020-05-07T23:27:36Z",
+              "updatedAt": "2020-05-08T02:14:52Z"
+            },
+            {
+              "originalPosition": 74,
+              "body": "I think that this is really the one point.  If we move the first point to the invariants doc (and I think we should), then you can just talk about the one assumption: that addressing information doesn't change until after the server is able to give the client a connection ID that works for proper routing.\r\n\r\nHowever, this isn't completely sufficient.  If your load balancer is stateless and performs address-tuple routing on long headers and connection ID routing on short headers, you are relying on a different assumption:  that long headers are only used prior for that period the address is stable during setup.  If we ever found a use for a long header long after connection establishment, the load balancer wouldn't know that and it might route things differently.\r\n\r\nThat's not a great situation to be in.",
+              "createdAt": "2020-05-07T23:31:33Z",
+              "updatedAt": "2020-05-08T02:14:52Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDA3OTUzOTcz",
+          "commit": {
+            "abbreviatedOid": "4e3d9c0"
+          },
+          "author": "martinduke",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-05-08T02:17:24Z",
+          "updatedAt": "2020-05-08T02:17:25Z",
+          "comments": [
+            {
+              "originalPosition": 68,
+              "body": "That would be fine; LBs could safely drop short headers with non compliant DCIDs.",
+              "createdAt": "2020-05-08T02:17:25Z",
+              "updatedAt": "2020-05-08T02:17:25Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDA3OTU1NTcy",
+          "commit": {
+            "abbreviatedOid": "4e3d9c0"
+          },
+          "author": "martinduke",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-05-08T02:23:11Z",
+          "updatedAt": "2020-05-08T02:23:12Z",
+          "comments": [
+            {
+              "originalPosition": 74,
+              "body": "Not quite. Let's say the invariants specify that the server generated CID will be in place within one (lossless) RTT. (The first assumption)\r\n\r\nThen we are still hosed if, for some reason, v2 has clients use different CIDs for each initial and 0rtt packet. Why would v2 do that! I have no idea!\r\n\r\nUltimately, if the invariants can promise that some part of the long header will be consistent and connection unique until we have a server generated CID, we'll update the LB guidance to hash off that.\r\n\r\nLate long headers are not a problem as long as they have a server generated DCID. The LB is always supposed to trial decode the DCID to see if it is compliant.",
+              "createdAt": "2020-05-08T02:23:12Z",
+              "updatedAt": "2020-05-08T02:23:12Z"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
