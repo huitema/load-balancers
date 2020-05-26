@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2020-05-20T22:57:59.607174+00:00",
+  "timestamp": "2020-05-26T17:33:02.654773+00:00",
   "repo": "quicwg/load-balancers",
   "labels": [
     {
@@ -299,15 +299,15 @@
       "id": "MDU6SXNzdWU2MTQyMDc4NTA=",
       "title": "Load Balancing Invariant Longer Header Packets",
       "url": "https://github.com/quicwg/load-balancers/issues/20",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "nibanks",
       "authorAssociation": "MEMBER",
       "assignees": [],
       "labels": [],
       "body": "We've had some discussion in this area in the past, and we decided that the best way to statelessly (and consistently) load balance long header packets would be to use a hash of the UDP 4-tuple and the client's source CID; since these are the only constants for all incoming (to the server) long header packets. I have come up with a couple of problems with this approach:\r\n\r\n1. As far as I know, there is no statement in the Invariants that says these must all stay constant for all future versions of QUIC.\r\n\r\n2. Using the hash approach can only function statelessly if there is not change in the DIP configuration. If the set of servers being load balanced changes (which we must assume to be common), then whatever stateless logic you have that maps hash to DIP would also change, resulting in long header packets getting routed incorrectly most likely.\r\n\r\n3. A follow up to (2), if you assume that the long header packets cannot therefore be routed statelessly based on the hash, and state must be tracked to continue to consistently route all long header packets until they are no longer used, at what point can the LB discard this state. By design, there is no on-path signal to indicate \"long header packets are no longer used\". Any heuristic that might be added here would be affected by (1) too.\r\n\r\nBecause of these issues, I'm left scratching my head on the best way to recommend to LBs on how to load balance invariant long header packets. The best thing I can think of is:\r\n\r\n- Use the hash mentioned above, but maintain state for each flow (tuple+client_cid).\r\n- Reset a timer (5 sec? 10 sec? 30 sec?) after each new packet is received for the flow. Discard the state when the timer fires.\r\n\r\nBecause the client's CID is included in the flow calculation, it allows an attacker to create nearly unlimited number of flow states on the LB. You might argue that Retry could be first used by a (cooperating) DoS appliance to first validate source address, but after that is done, this attack can still be executed. It would then require some heuristics on the LB to protect against.\r\n\r\n@martinduke @martinthomson any ideas here? ",
       "createdAt": "2020-05-07T17:00:47Z",
-      "updatedAt": "2020-05-08T01:39:43Z",
-      "closedAt": null,
+      "updatedAt": "2020-05-22T15:47:43Z",
+      "closedAt": "2020-05-22T15:47:43Z",
       "comments": [
         {
           "author": "nibanks",
@@ -408,6 +408,74 @@
           "updatedAt": "2020-05-08T01:39:43Z"
         }
       ]
+    },
+    {
+      "number": 22,
+      "id": "MDU6SXNzdWU2MjMzMDQxNDM=",
+      "title": "Tweak non-compliant DCID recommendation",
+      "url": "https://github.com/quicwg/load-balancers/issues/22",
+      "state": "OPEN",
+      "author": "martinduke",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "@martinthomson sayeth on the list:\r\n\r\n>  That routing will rely on the stability of a subset of fields.  I would select from (source IP, source port, destination IP, destination port, DCID) and no others.\r\n\r\nIt would be useful to include something like this in Section 4 as a non-normative hint on what fields to use, since our hint currently consists of an example that just uses the DCID.\r\n\r\nSimilarly, make that assumption clearer in Section 8.\r\n",
+      "createdAt": "2020-05-22T15:50:03Z",
+      "updatedAt": "2020-05-22T22:08:33Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "DavidSchinazi",
+          "authorAssociation": "NONE",
+          "body": "For what it's worth, Google's load balancer only uses destination CIDs for routing. We always pick 64bit CIDs during the handshake so we can assume that short headers always carry 64bit CIDs.",
+          "createdAt": "2020-05-22T17:48:35Z",
+          "updatedAt": "2020-05-22T17:48:35Z"
+        },
+        {
+          "author": "martinduke",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Do all CIDs resolve to a valid server ID?",
+          "createdAt": "2020-05-22T18:15:45Z",
+          "updatedAt": "2020-05-22T18:15:45Z"
+        },
+        {
+          "author": "nibanks",
+          "authorAssociation": "MEMBER",
+          "body": "@DavidSchinazi do you not care about an attacker specifically crafting destination CIDs to attack a particular server?",
+          "createdAt": "2020-05-22T18:39:21Z",
+          "updatedAt": "2020-05-22T18:39:21Z"
+        },
+        {
+          "author": "DavidSchinazi",
+          "authorAssociation": "NONE",
+          "body": "@martinduke \r\n> Do all CIDs resolve to a valid server ID?\r\n\r\nWe do not have a concept of server ID, but yes every CID routes to a server.\r\n\r\n@nibanks\r\n> @DavidSchinazi do you not care about an attacker specifically crafting destination CIDs to attack a particular server?\r\n\r\nWe do not care about that attack. I haven't seen any indication that it can actually cause harm in real life.",
+          "createdAt": "2020-05-22T19:41:49Z",
+          "updatedAt": "2020-05-22T19:41:49Z"
+        },
+        {
+          "author": "martinduke",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "@DavidSchinazi very well, then you have no non-compliant DCIDs. You would only need to upgrade your LBs for new versions if they allowed client-chosen DCIDs < 8 bytes.",
+          "createdAt": "2020-05-22T22:08:33Z",
+          "updatedAt": "2020-05-22T22:08:33Z"
+        }
+      ]
+    },
+    {
+      "number": 23,
+      "id": "MDU6SXNzdWU2MjMzMzQxOTI=",
+      "title": "Fix Figures 3 and 4",
+      "url": "https://github.com/quicwg/load-balancers/issues/23",
+      "state": "OPEN",
+      "author": "martinduke",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "The bit variable length bit fields are wrong, and don't match the text. Fix them.",
+      "createdAt": "2020-05-22T16:32:44Z",
+      "updatedAt": "2020-05-22T16:32:44Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
