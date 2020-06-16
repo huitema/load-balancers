@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2020-05-26T17:33:02.654773+00:00",
+  "timestamp": "2020-06-16T22:01:24.211577+00:00",
   "repo": "quicwg/load-balancers",
   "labels": [
     {
@@ -52,6 +52,11 @@
       "name": "editorial",
       "description": "",
       "color": "fc94f8"
+    },
+    {
+      "name": "needs-discussion",
+      "description": "",
+      "color": "32d5db"
     }
   ],
   "issues": [
@@ -84,15 +89,15 @@
       "id": "MDU6SXNzdWU1NzM2MjEwNzk=",
       "title": "SCID acronym",
       "url": "https://github.com/quicwg/load-balancers/issues/7",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "martinthomson",
       "authorAssociation": "MEMBER",
       "assignees": [],
       "labels": [],
       "body": "This is often used to mean Source Connection ID in other contexts.  A collision here is likely to cause confusion.",
       "createdAt": "2020-03-01T21:43:26Z",
-      "updatedAt": "2020-03-09T15:54:35Z",
-      "closedAt": null,
+      "updatedAt": "2020-06-16T22:00:22Z",
+      "closedAt": "2020-06-16T22:00:22Z",
       "comments": [
         {
           "author": "martinduke",
@@ -128,6 +133,13 @@
           "body": "I guess this proves MT's point. \"STream Cipher Connection ID\" (just like PCID, OCID, BCID)",
           "createdAt": "2020-03-09T15:54:35Z",
           "updatedAt": "2020-03-09T15:54:35Z"
+        },
+        {
+          "author": "martinduke",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Looking again, the document never uses any acronym for 'stream cipher connection ID', so there's no issue there. This is just about 'S' meaning \"source\" or \"server\".",
+          "createdAt": "2020-05-26T18:04:23Z",
+          "updatedAt": "2020-05-26T18:04:23Z"
         }
       ]
     },
@@ -140,10 +152,12 @@
       "author": "martinthomson",
       "authorAssociation": "MEMBER",
       "assignees": [],
-      "labels": [],
+      "labels": [
+        "needs-discussion"
+      ],
       "body": "There is a requirement that it be difficult for a party other than the server and load balancer to guess a CID that will be accepted as valid for a target connection.\r\n\r\nThis requirement needs to be validated for the schemes described in the draft.  This might impose some constraints on the designs chosen.\r\n\r\nFor instance, I don't believe that the plaintext algorithm meets this goal.  The server ID can take all the available space, which is probably wrong.  Clearly it is impossible to create sufficient connection IDs for even a single connection if there is only one valid identifier per server.  However, it might be argued that even an 18 byte server ID makes it too easy to guess a valid connection ID for a connection (just 16 guesses would be enough to get a 50% chance at that).  So it seems to me that a shorter connection ID is necessary.\r\n\r\nThe same applies to any attempt at obfuscation.\r\n\r\nThe encrypted versions might be similarly challenging to get right.  The For Server Use field in the stream cipher variant needs to be sufficiently long as to avoid engineered collisions.  The value used for the stream cipher is malleable, which means that an attacker isn't prevented from guessing.  In many ways, this is more challenging than the plaintext variant because the nonce consumes space.\r\n\r\nThe zero-padding in the block cipher mode might be the best way of preventing guessing, if it were sufficiently long.  Similarly, if \"Encrypted bits for server use\" were sufficiently sparsely populated, then guessing can be hard enough.",
       "createdAt": "2020-03-01T22:06:18Z",
-      "updatedAt": "2020-03-09T16:52:02Z",
+      "updatedAt": "2020-05-26T18:10:42Z",
       "closedAt": null,
       "comments": [
         {
@@ -195,7 +209,7 @@
       "labels": [],
       "body": "The draft doesn't address the impact of each method of connection ID generation on how servers can use stateless resets.\r\n\r\nMost of this is likely bound up in decisions stemming from #8.  If you can guess a valid but unused connection ID, then you might be able to induce a stateless reset that could be used to kill an open connection.\r\n\r\nAs the draft only includes methods that include an explicit server identifier, it is possible that as long as valid values cannot be guessed, the effect is minimal and each server instance can have its own configured stateless reset key (or a shared key from which a per-server key is derived using a KDF).",
       "createdAt": "2020-03-01T22:30:24Z",
-      "updatedAt": "2020-03-06T21:07:24Z",
+      "updatedAt": "2020-05-27T01:39:56Z",
       "closedAt": null,
       "comments": [
         {
@@ -211,6 +225,20 @@
           "body": "As to the last point, nope: even a long header with a DCID that conforms to the server's expectations (i.e. maps to a real server) will get delivered to that server, so I don't think that's an attack.",
           "createdAt": "2020-03-06T21:06:56Z",
           "updatedAt": "2020-03-06T21:06:56Z"
+        },
+        {
+          "author": "martinduke",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "@martinthomson Should we talk about this issue more, or are you satisfied enough that I can close it?",
+          "createdAt": "2020-05-26T18:12:10Z",
+          "updatedAt": "2020-05-26T18:12:10Z"
+        },
+        {
+          "author": "martinthomson",
+          "authorAssociation": "MEMBER",
+          "body": "I don't see any mention of stateless reset in the draft at all.  That's probably something worth addressing, even if it is to say what you have already.",
+          "createdAt": "2020-05-27T01:39:55Z",
+          "updatedAt": "2020-05-27T01:39:55Z"
         }
       ]
     },
@@ -263,10 +291,12 @@
       "author": "martinthomson",
       "authorAssociation": "MEMBER",
       "assignees": [],
-      "labels": [],
+      "labels": [
+        "needs-discussion"
+      ],
       "body": "As server clusters increase in size, the need to reallocate server identifiers becomes more acute. \r\n\r\nIn one model, the configuration ID is used to indicate a stable routing configuration.  Server identifiers for a given configuration ID are routed to the same server, no matter how many other instances are added or removed.  In order to allow for changes in the cluster, the configuration ID is used so that old servers can be removed from consideration and new ones added.\r\n\r\nIf these changes happen frequently enough, the number of bits allocated to identifying a configuration might be insufficient.  Why not make the length of the identifier flexible?  That might mean that you need to make the length of the length similarly configurable.",
       "createdAt": "2020-03-02T23:28:35Z",
-      "updatedAt": "2020-03-06T20:39:11Z",
+      "updatedAt": "2020-05-26T18:13:14Z",
       "closedAt": null,
       "comments": [
         {
@@ -287,10 +317,12 @@
       "author": "martinduke",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
-      "labels": [],
+      "labels": [
+        "needs-discussion"
+      ],
       "body": "QUIC-LB has a bit of an incentive mismatch. The server infrastructure decides how linkable the CID algorithm is, but the client bears most of the cost of the CIDs being linkable. Worse yet, the client has no idea, without a lot of effort, what the servers are doing. Even worse, the servers have some incentives to pick something that's easily linkable.\r\n\r\nIn Section 8, it says:\r\n\r\n> Servers that are running the Plaintext CID algorithm SHOULD only use it to generate new CIDs for the Server Initial Packet and SHOULD NOT send CIDs in QUIC NEW_CONNECTION_ID frames\r\n\r\nThis is a concise way of not giving the client tools to link itself by trying an unsafe migration.\r\n\r\nWe could just stick with that. A richer way to go would be to create a new transport parameter (e.g. cid_is_linkable, cid_not_encrypted) that would explicitly communicate the risks to the client. We could have a different value for OCID or batch PCID and OCID together.\r\n",
       "createdAt": "2020-03-25T19:41:47Z",
-      "updatedAt": "2020-03-25T19:41:47Z",
+      "updatedAt": "2020-05-26T18:10:25Z",
       "closedAt": null,
       "comments": []
     },
@@ -466,14 +498,30 @@
       "id": "MDU6SXNzdWU2MjMzMzQxOTI=",
       "title": "Fix Figures 3 and 4",
       "url": "https://github.com/quicwg/load-balancers/issues/23",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "martinduke",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "The bit variable length bit fields are wrong, and don't match the text. Fix them.",
       "createdAt": "2020-05-22T16:32:44Z",
-      "updatedAt": "2020-05-22T16:32:44Z",
+      "updatedAt": "2020-05-26T18:14:13Z",
+      "closedAt": "2020-05-26T18:14:13Z",
+      "comments": []
+    },
+    {
+      "number": 27,
+      "id": "MDU6SXNzdWU2Mzc4NTQxNTY=",
+      "title": "Discuss uniqueness of config across load balancers",
+      "url": "https://github.com/quicwg/load-balancers/issues/27",
+      "state": "OPEN",
+      "author": "martinduke",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Add a security consideration to avoid the following scenario:\r\n\r\nMyCloudProvider has a single QUIC-LB config for all its load balancers. It rotates keys periodically, etc, but everyone gets the same config. Obviously, all the attacker has to do is open an account with MyCloudProvider and it is able to recover all the server IDs.\r\n\r\nConfigs ought to be restricted to load balancers serving a finite set of servers. It is possible another MyCloudProvider customer is in the pool behind that load balancer, but that's already a privileged position as already described in the draft.\r\n\r\nObviously, this will require some wordsmithing, as the statement above isn't very precise.",
+      "createdAt": "2020-06-12T16:00:00Z",
+      "updatedAt": "2020-06-12T16:00:00Z",
       "closedAt": null,
       "comments": []
     }
@@ -1132,6 +1180,149 @@
               "updatedAt": "2020-05-08T02:23:12Z"
             }
           ]
+        }
+      ]
+    },
+    {
+      "number": 24,
+      "id": "MDExOlB1bGxSZXF1ZXN0NDIzMzQ5Mzgx",
+      "title": "fix figures",
+      "url": "https://github.com/quicwg/load-balancers/pull/24",
+      "state": "MERGED",
+      "author": "martinduke",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Fixes #23",
+      "createdAt": "2020-05-26T17:34:10Z",
+      "updatedAt": "2020-05-26T18:14:15Z",
+      "baseRepository": "quicwg/load-balancers",
+      "baseRefName": "master",
+      "baseRefOid": "6b5ff625a09407fc4afe7c772c439fe5078ec8ac",
+      "headRepository": "quicwg/load-balancers",
+      "headRefName": "fig3-4",
+      "headRefOid": "97382eaae28603339133f6169aab9f40356f03e9",
+      "closedAt": "2020-05-26T18:14:13Z",
+      "mergedAt": "2020-05-26T18:14:13Z",
+      "mergedBy": "martinduke",
+      "mergeCommit": {
+        "oid": "5b6034235feebcf92c64c8aef1a56760f5329996"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDE4NTI2MDYw",
+          "commit": {
+            "abbreviatedOid": "97382ea"
+          },
+          "author": "nibanks",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2020-05-26T17:35:39Z",
+          "updatedAt": "2020-05-26T17:35:39Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 25,
+      "id": "MDExOlB1bGxSZXF1ZXN0NDIzMzY1Mzgw",
+      "title": "Update text on Version Independence",
+      "url": "https://github.com/quicwg/load-balancers/pull/25",
+      "state": "OPEN",
+      "author": "martinduke",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Carefully phrased language that considers @martinthomson 's suggestion that SCID may not be stable across versions, and tries to suggest (IP, port, DCID) as a suitable long header hash without making promises on behalf of quic-invariants.\r\n\r\nFixes #22.",
+      "createdAt": "2020-05-26T18:01:03Z",
+      "updatedAt": "2020-05-27T01:45:24Z",
+      "baseRepository": "quicwg/load-balancers",
+      "baseRefName": "master",
+      "baseRefOid": "6b5ff625a09407fc4afe7c772c439fe5078ec8ac",
+      "headRepository": "quicwg/load-balancers",
+      "headRefName": "noncompliant",
+      "headRefOid": "bc1b63801fb1b2102c100d34619b5df29b99158b",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDE4ODAyMTY0",
+          "commit": {
+            "abbreviatedOid": "bc1b638"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "MEMBER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-05-27T01:44:04Z",
+          "updatedAt": "2020-05-27T01:45:24Z",
+          "comments": [
+            {
+              "originalPosition": 8,
+              "body": "What interval?\r\n\r\n (I think that the list structure is working against you here.)",
+              "createdAt": "2020-05-27T01:44:04Z",
+              "updatedAt": "2020-05-27T01:45:24Z"
+            },
+            {
+              "originalPosition": 9,
+              "body": "Don't use \"for example\" here.  You want to be precise.",
+              "createdAt": "2020-05-27T01:44:41Z",
+              "updatedAt": "2020-05-27T01:45:24Z"
+            },
+            {
+              "originalPosition": 10,
+              "body": "for all packets sent on the same connection.",
+              "createdAt": "2020-05-27T01:45:10Z",
+              "updatedAt": "2020-05-27T01:45:24Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 26,
+      "id": "MDExOlB1bGxSZXF1ZXN0NDIzMzY4NjU4",
+      "title": "Get rid of SCID acronym",
+      "url": "https://github.com/quicwg/load-balancers/pull/26",
+      "state": "MERGED",
+      "author": "martinduke",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Server CID will collide with Source CID.\r\n\r\nFixes #7",
+      "createdAt": "2020-05-26T18:07:59Z",
+      "updatedAt": "2020-06-16T22:00:23Z",
+      "baseRepository": "quicwg/load-balancers",
+      "baseRefName": "master",
+      "baseRefOid": "6b5ff625a09407fc4afe7c772c439fe5078ec8ac",
+      "headRepository": "quicwg/load-balancers",
+      "headRefName": "new-acronym",
+      "headRefOid": "a257b65356790128948bccbb26496d6dc7be33be",
+      "closedAt": "2020-06-16T22:00:22Z",
+      "mergedAt": "2020-06-16T22:00:22Z",
+      "mergedBy": "martinduke",
+      "mergeCommit": {
+        "oid": "1033d06b11f1fffcde778b40a0eed67748e6da6e"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDE4NTgwMDY4",
+          "commit": {
+            "abbreviatedOid": "a257b65"
+          },
+          "author": "nibanks",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2020-05-26T18:47:23Z",
+          "updatedAt": "2020-05-26T18:47:23Z",
+          "comments": []
         }
       ]
     }
