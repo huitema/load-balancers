@@ -128,26 +128,28 @@ Internet-Draft                   QUIC-LB                       June 2020
    9.  Security Considerations . . . . . . . . . . . . . . . . . . .  23
      9.1.  Attackers not between the load balancer and server  . . .  23
      9.2.  Attackers between the load balancer and server  . . . . .  24
+     9.3.  Limited configuration deployment  . . . . . . . . . . . .  24
+     9.4.  Stateless Reset Oracle  . . . . . . . . . . . . . . . . .  24
    10. IANA Considerations . . . . . . . . . . . . . . . . . . . . .  24
    11. References  . . . . . . . . . . . . . . . . . . . . . . . . .  24
      11.1.  Normative References . . . . . . . . . . . . . . . . . .  24
-     11.2.  Informative References . . . . . . . . . . . . . . . . .  24
-   Appendix A.  Load Balancer Test Vectors . . . . . . . . . . . . .  24
+     11.2.  Informative References . . . . . . . . . . . . . . . . .  25
+   Appendix A.  Load Balancer Test Vectors . . . . . . . . . . . . .  25
      A.1.  Obfuscated Connection ID Algorithm  . . . . . . . . . . .  25
      A.2.  Stream Cipher Connection ID Algorithm . . . . . . . . . .  26
      A.3.  Block Cipher Connection ID Algorithm  . . . . . . . . . .  27
    Appendix B.  Acknowledgments  . . . . . . . . . . . . . . . . . .  28
    Appendix C.  Change Log . . . . . . . . . . . . . . . . . . . . .  28
-     C.1.  since-draft-ietf-quic-load-balancers-02 . . . . . . . . .  28
-     C.2.  since-draft-ietf-quic-load-balancers-01 . . . . . . . . .  28
-     C.3.  since-draft-ietf-quic-load-balancers-00 . . . . . . . . .  28
-     C.4.  Since draft-duke-quic-load-balancers-06 . . . . . . . . .  28
-     C.5.  Since draft-duke-quic-load-balancers-05 . . . . . . . . .  28
+     C.1.  since-draft-ietf-quic-load-balancers-02 . . . . . . . . .  29
+     C.2.  since-draft-ietf-quic-load-balancers-01 . . . . . . . . .  29
+     C.3.  since-draft-ietf-quic-load-balancers-00 . . . . . . . . .  29
+     C.4.  Since draft-duke-quic-load-balancers-06 . . . . . . . . .  29
+     C.5.  Since draft-duke-quic-load-balancers-05 . . . . . . . . .  29
      C.6.  Since draft-duke-quic-load-balancers-04 . . . . . . . . .  29
      C.7.  Since draft-duke-quic-load-balancers-03 . . . . . . . . .  29
-     C.8.  Since draft-duke-quic-load-balancers-02 . . . . . . . . .  29
-     C.9.  Since draft-duke-quic-load-balancers-01 . . . . . . . . .  29
-     C.10. Since draft-duke-quic-load-balancers-00 . . . . . . . . .  29
+     C.8.  Since draft-duke-quic-load-balancers-02 . . . . . . . . .  30
+     C.9.  Since draft-duke-quic-load-balancers-01 . . . . . . . . .  30
+     C.10. Since draft-duke-quic-load-balancers-00 . . . . . . . . .  30
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  30
 
 1.  Introduction
@@ -159,8 +161,6 @@ Internet-Draft                   QUIC-LB                       June 2020
    usually designate the connection ID which peers use to address
    packets.  Server-generated connection IDs create a potential need for
    out-of-band communication to support QUIC.
-
-
 
 
 
@@ -1298,6 +1298,30 @@ Internet-Draft                   QUIC-LB                       June 2020
    connection if servers make reasonable selections when generating new
    IDs for that connection.
 
+9.3.  Limited configuration deployment
+
+   A naive deployment of QUIC-LB in a cloud provider might use the same
+   global QUIC-LB configuration across all the load balancers in its
+   enterprise.  An attacker could then simply become a customer, obtain
+   the configuration, and then extract server IDs of other customers'
+   connections at will.
+
+   To avoid this, the entities that manage load balancers SHOULD use a
+   single configuration instance in as narrow a deployment as possible.
+   Ideally, a load balancer would not have any QUIC-LB configuration
+   relevant to a server to which it cannot route.
+
+9.4.  Stateless Reset Oracle
+
+   Section 21.9 of [QUIC-TRANSPORT] discusses the Stateless Reset Oracle
+   attack.  For a server deployment to be vulnerable, an attacking
+   client must be able to cause two packets with the same Destination
+   CID to arrive at two different servers that share the same
+   cryptographic context for Stateless Reset tokens.  As QUIC-LB
+   requires deterministic routing of DCIDs over the life of a
+   connection, it is a sufficient means of avoiding an Oracle without
+   additional measures.
+
 10.  IANA Considerations
 
    There are no IANA requirements.
@@ -1311,6 +1335,16 @@ Internet-Draft                   QUIC-LB                       June 2020
               QUIC", Work in Progress, Internet-Draft, draft-ietf-quic-
               invariants,
               <https://tools.ietf.org/html/draft-ietf-quic-invariants>.
+
+
+
+
+
+
+Duke & Banks            Expires 18 December 2020               [Page 24]
+
+Internet-Draft                   QUIC-LB                       June 2020
+
 
    [QUIC-TRANSPORT]
               Iyengar, J., Ed. and M. Thomson, Ed., "QUIC: A UDP-Based
@@ -1338,14 +1372,6 @@ Appendix A.  Load Balancer Test Vectors
    unique server ID.  The following connection IDs can be used to verify
    that a load balancer implementation extracts the correct server ID.
 
-
-
-
-Duke & Banks            Expires 18 December 2020               [Page 24]
-
-Internet-Draft                   QUIC-LB                       June 2020
-
-
 A.1.  Obfuscated Connection ID Algorithm
 
    The following section lists a set of OCID load balancer
@@ -1363,6 +1389,18 @@ A.1.  Obfuscated Connection ID Algorithm
 
    cr_bits 0x1 length_self_encoding: n bitmask
    4855d35f5b88ddada153af61b6707ee646 divisor 301
+
+
+
+
+
+
+
+
+Duke & Banks            Expires 18 December 2020               [Page 25]
+
+Internet-Draft                   QUIC-LB                       June 2020
+
 
    cid 542dc4c09e2d548e508dc825bbbca991c131 sid 8
    cid 47988071f9f03a25c322cc6fb1d57151d26f sid 93
@@ -1391,17 +1429,6 @@ A.1.  Obfuscated Connection ID Algorithm
    cr_bits 0x0 length_self_encoding: y bitmask 8320fefc5309f7aa670476
    divisor 379
 
-
-
-
-
-
-
-Duke & Banks            Expires 18 December 2020               [Page 25]
-
-Internet-Draft                   QUIC-LB                       June 2020
-
-
    cid 0bb110af53dca7295e7d4b7e sid 101
    cid 0b0d284cdff364a634a4b93b sid e3
    cid 0b82ff1555c4a95f9b198090 sid 14e
@@ -1421,6 +1448,15 @@ A.2.  Stream Cipher Connection ID Algorithm
    cid 0e78f0325a8e34a40661f51f235906 sid 1d
    cid 0ef37923f81c32632299bceabd1d92 sid fa
    cid 0ea30788c012daa94a83865a2c7f28 sid b3
+
+
+
+
+
+Duke & Banks            Expires 18 December 2020               [Page 26]
+
+Internet-Draft                   QUIC-LB                       June 2020
+
 
    cr_bits 0x1 length_self_encoding: n nonce_len 9 sid_len 2 key
    906220f402ba3bd893ccc4dd9cfc04b0
@@ -1449,15 +1485,6 @@ A.2.  Stream Cipher Connection ID Algorithm
    cid 11e4df0eb7db00363b1721e4a4 sid 31f15006
    cid 3d54b24c7bd39f081f00f44295 sid 551b8c28
 
-
-
-
-
-Duke & Banks            Expires 18 December 2020               [Page 26]
-
-Internet-Draft                   QUIC-LB                       June 2020
-
-
    cr_bits 0x0 length_self_encoding: y nonce_len 12 sid_len 5 key
    ba4909a865c19d0234e090197d61bab9
 
@@ -1474,6 +1501,18 @@ A.3.  Block Cipher Connection ID Algorithm
 
    cr_bits 0x0 length_self_encoding: y sid_len 1 zp_len 11 key
    8c24cb9b9c3289b4ee63c3f3d7f93a9a
+
+
+
+
+
+
+
+
+Duke & Banks            Expires 18 December 2020               [Page 27]
+
+Internet-Draft                   QUIC-LB                       June 2020
+
 
    cid: 1378e44f874642624fa69e7b4aec15a2a678b8b5 sid: 48
    cid: 13772c82fe8ce6a00813f76a211b730eb4b20363 sid: 66
@@ -1502,18 +1541,6 @@ A.3.  Block Cipher Connection ID Algorithm
    cr_bits 0x0 length_self_encoding: n sid_len 4 zp_len 8 key
    ee2dc6a3359a94b0043ca0c82715ce71
 
-
-
-
-
-
-
-
-Duke & Banks            Expires 18 December 2020               [Page 27]
-
-Internet-Draft                   QUIC-LB                       June 2020
-
-
    cid: 058b9da37f436868cca3cef40c7f98001797c611 sid: eaf846c7
    cid: 1259fc97439adaf87f61250afea059e5ddf66e44 sid: 4cc5e84a
    cid: 202f424376f234d5f014f41cebc38de2619c6c71 sid: f94ff800
@@ -1535,6 +1562,13 @@ Appendix C.  Change Log
 
       *RFC Editor's Note:* Please remove this section prior to
       publication of a final version of this document.
+
+
+
+Duke & Banks            Expires 18 December 2020               [Page 28]
+
+Internet-Draft                   QUIC-LB                       June 2020
+
 
 C.1.  since-draft-ietf-quic-load-balancers-02
 
@@ -1562,14 +1596,6 @@ C.4.  Since draft-duke-quic-load-balancers-06
 
 C.5.  Since draft-duke-quic-load-balancers-05
 
-
-
-
-Duke & Banks            Expires 18 December 2020               [Page 28]
-
-Internet-Draft                   QUIC-LB                       June 2020
-
-
    *  Editorial changes
 
    *  Made load balancer behavior independent of QUIC version
@@ -1591,6 +1617,14 @@ C.7.  Since draft-duke-quic-load-balancers-03
    *  Renamed Plaintext CID algorithm as Obfuscated CID
 
    *  Added new Plaintext CID algorithm
+
+
+
+
+Duke & Banks            Expires 18 December 2020               [Page 29]
+
+Internet-Draft                   QUIC-LB                       June 2020
+
 
    *  Updated to allow 20B CIDs
 
@@ -1618,14 +1652,6 @@ C.9.  Since draft-duke-quic-load-balancers-01
 
 C.10.  Since draft-duke-quic-load-balancers-00
 
-
-
-
-Duke & Banks            Expires 18 December 2020               [Page 29]
-
-Internet-Draft                   QUIC-LB                       June 2020
-
-
    *  Converted to markdown
 
    *  Added variable length connection IDs
@@ -1642,32 +1668,6 @@ Authors' Addresses
    Microsoft
 
    Email: nibanks@microsoft.com
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
