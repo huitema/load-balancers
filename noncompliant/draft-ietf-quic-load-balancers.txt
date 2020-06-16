@@ -5,8 +5,8 @@
 QUIC                                                             M. Duke
 Internet-Draft                                         F5 Networks, Inc.
 Intended status: Standards Track                                N. Banks
-Expires: 27 November 2020                                      Microsoft
-                                                             26 May 2020
+Expires: 18 December 2020                                      Microsoft
+                                                            16 June 2020
 
 
             QUIC-LB: Generating Routable QUIC Connection IDs
@@ -53,12 +53,12 @@ Status of This Memo
 
 
 
-Duke & Banks            Expires 27 November 2020                [Page 1]
+Duke & Banks            Expires 18 December 2020                [Page 1]
 
-Internet-Draft                   QUIC-LB                        May 2020
+Internet-Draft                   QUIC-LB                       June 2020
 
 
-   This Internet-Draft will expire on 27 November 2020.
+   This Internet-Draft will expire on 18 December 2020.
 
 Copyright Notice
 
@@ -86,7 +86,7 @@ Table of Contents
      3.2.  Configuration Failover  . . . . . . . . . . . . . . . . .   7
      3.3.  Length Self-Description . . . . . . . . . . . . . . . . .   7
    4.  Routing Algorithms  . . . . . . . . . . . . . . . . . . . . .   7
-     4.1.  Plaintext CID Algorithm . . . . . . . . . . . . . . . . .   8
+     4.1.  Plaintext CID Algorithm . . . . . . . . . . . . . . . . .   9
        4.1.1.  Configuration Agent Actions . . . . . . . . . . . . .   9
        4.1.2.  Load Balancer Actions . . . . . . . . . . . . . . . .   9
        4.1.3.  Server Actions  . . . . . . . . . . . . . . . . . . .   9
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Duke & Banks            Expires 27 November 2020                [Page 2]
+Duke & Banks            Expires 18 December 2020                [Page 2]
 
-Internet-Draft                   QUIC-LB                        May 2020
+Internet-Draft                   QUIC-LB                       June 2020
 
 
        5.2.2.  Service Requirements  . . . . . . . . . . . . . . . .  15
@@ -165,9 +165,9 @@ Internet-Draft                   QUIC-LB                        May 2020
 
 
 
-Duke & Banks            Expires 27 November 2020                [Page 3]
+Duke & Banks            Expires 18 December 2020                [Page 3]
 
-Internet-Draft                   QUIC-LB                        May 2020
+Internet-Draft                   QUIC-LB                       June 2020
 
 
    QUIC allows servers (or load balancers) to designate an initial
@@ -221,9 +221,9 @@ Internet-Draft                   QUIC-LB                        May 2020
 
 
 
-Duke & Banks            Expires 27 November 2020                [Page 4]
+Duke & Banks            Expires 18 December 2020                [Page 4]
 
-Internet-Draft                   QUIC-LB                        May 2020
+Internet-Draft                   QUIC-LB                       June 2020
 
 
    In this document, these words will appear with that interpretation
@@ -242,6 +242,8 @@ Internet-Draft                   QUIC-LB                        May 2020
    a QUIC connection with the client and then retrieving data from the
    server using QUIC or another protocol, are treated as a server with
    respect to this specification.
+
+   For brevity, "Connection ID" will often be abbreviated as "CID".
 
 2.  Protocol Objectives
 
@@ -268,19 +270,23 @@ Internet-Draft                   QUIC-LB                        May 2020
    associate two connection IDs even if they are known to map to the
    same server.
 
+
+
+
+
+
+
+
+Duke & Banks            Expires 18 December 2020                [Page 5]
+
+Internet-Draft                   QUIC-LB                       June 2020
+
+
    QUIC-LB is relevant in the region between these extremes: when the
    information that two connection IDs map to the same server is helpful
    to linking two connection IDs.  Obviously, any scheme that
    transparently communicates this mapping to outside observers
    compromises QUIC's defenses against linkability.
-
-
-
-
-Duke & Banks            Expires 27 November 2020                [Page 5]
-
-Internet-Draft                   QUIC-LB                        May 2020
-
 
    Though not an explicit goal of the QUIC-LB design, concealing the
    server mapping also complicates attempts to focus attacks on a
@@ -321,22 +327,21 @@ Internet-Draft                   QUIC-LB                        May 2020
    load balancers are ready to process CIDs using the new parameters
    when they arrive.
 
+
+
+
+
+
+
+Duke & Banks            Expires 18 December 2020                [Page 6]
+
+Internet-Draft                   QUIC-LB                       June 2020
+
+
    A Configuration Agent SHOULD NOT use a codepoint to represent a new
    configuration until it takes precautions to make sure that all
    connections using CIDs with an old configuration at that codepoint
    have closed or transitioned.
-
-
-
-
-
-
-
-
-Duke & Banks            Expires 27 November 2020                [Page 6]
-
-Internet-Draft                   QUIC-LB                        May 2020
-
 
    Servers MUST NOT generate new connection IDs using an old
    configuration after receiving a new one from the configuration agent.
@@ -379,6 +384,16 @@ Internet-Draft                   QUIC-LB                        May 2020
    to servers.  Instead, they communicate the parameters of an algorithm
    to generate routable connection IDs.
 
+
+
+
+
+
+Duke & Banks            Expires 18 December 2020                [Page 7]
+
+Internet-Draft                   QUIC-LB                       June 2020
+
+
    The algorithms differ in the complexity of configuration at both load
    balancer and server.  Increasing complexity improves obfuscation of
    the server mapping.
@@ -386,13 +401,6 @@ Internet-Draft                   QUIC-LB                        May 2020
    As clients sometimes generate the DCIDs in long headers, these might
    not conform to the expectations of the routing algorithm.  These are
    called "non-compliant DCIDs":
-
-
-
-Duke & Banks            Expires 27 November 2020                [Page 7]
-
-Internet-Draft                   QUIC-LB                        May 2020
-
 
    *  The DCID might not be long enough for the routing algorithm to
       process.
@@ -412,7 +420,8 @@ Internet-Draft                   QUIC-LB                        May 2020
    QUIC.  For example, a non-compliant DCID might be converted to an
    integer and divided by the number of servers, with the modulus used
    to forward the packet.  The number of servers is usually consistent
-   on the time scale of a QUIC connection handshake.
+   on the time scale of a QUIC connection handshake.  See also
+   Section 8.
 
    Load balancers SHOULD drop packets with non-compliant DCIDs in a
    short header.
@@ -434,21 +443,18 @@ Internet-Draft                   QUIC-LB                        May 2020
    This section describes three participants: the configuration agent,
    the load balancer, and the server.
 
+
+
+Duke & Banks            Expires 18 December 2020                [Page 8]
+
+Internet-Draft                   QUIC-LB                       June 2020
+
+
 4.1.  Plaintext CID Algorithm
 
    The Plaintext CID Algorithm makes no attempt to obscure the mapping
    of connections to servers, significantly increasing linkability.  The
    format is depicted in the figure below.
-
-
-
-
-
-
-Duke & Banks            Expires 27 November 2020                [Page 8]
-
-Internet-Draft                   QUIC-LB                        May 2020
-
 
    0                   1                   2                   3
    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -463,9 +469,9 @@ Internet-Draft                   QUIC-LB                        May 2020
 4.1.1.  Configuration Agent Actions
 
    The configuration agent selects a number of bytes of the server
-   connection ID (SCID) to encode individual server IDs, called the
-   "routing bytes".  The number of bytes MUST have enough entropy to
-   have a different code point for each server.
+   connection ID to encode individual server IDs, called the "routing
+   bytes".  The number of bytes MUST have enough entropy to have a
+   different code point for each server.
 
    It also assigns a server ID to each server.
 
@@ -492,29 +498,29 @@ Internet-Draft                   QUIC-LB                        May 2020
    true encryption and decryption.  The format is depicted in the figure
    below.
 
+
+
+
+Duke & Banks            Expires 18 December 2020                [Page 9]
+
+Internet-Draft                   QUIC-LB                       June 2020
+
+
    0                   1                   2                   3
    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
    |  First octet  |  Mixed routing and non-routing bits (64..152) |
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
-
-
-
-Duke & Banks            Expires 27 November 2020                [Page 9]
-
-Internet-Draft                   QUIC-LB                        May 2020
-
-
                       Figure 2: Obfuscated CID Format
 
 4.2.1.  Configuration Agent Actions
 
    The configuration agent selects an arbitrary set of bits of the
-   server connection ID (SCID) that it will use to route to a given
-   server, called the "routing bits".  The number of bits MUST have
-   enough entropy to have a different code point for each server, and
-   SHOULD have enough entropy so that there are many codepoints for each
+   server connection ID that it will use to route to a given server,
+   called the "routing bits".  The number of bits MUST have enough
+   entropy to have a different code point for each server, and SHOULD
+   have enough entropy so that there are many codepoints for each
    server.
 
    The configuration agent MUST NOT select a routing mask with more than
@@ -535,32 +541,30 @@ Internet-Draft                   QUIC-LB                        May 2020
 4.2.2.  Load Balancer Actions
 
    Upon receipt of a QUIC packet, the load balancer extracts the
-   selected bits of the SCID and expresses them as an unsigned integer
-   of that length.  The load balancer then divides the result by the
-   chosen divisor.  The modulus of this operation maps to the modulus
-   for the destination server.
+   selected bits of the Server CID and expresses them as an unsigned
+   integer of that length.  The load balancer then divides the result by
+   the chosen divisor.  The modulus of this operation maps to the
+   modulus for the destination server.
 
-   Note that any SCID that contains a server's modulus, plus an
+   Note that any Server CID that contains a server's modulus, plus an
    arbitrary integer multiple of the divisor, in the routing bits is
    routable to that server regardless of the contents of the non-routing
    bits.  Outside observers that do not know the divisor or the routing
-   bits will therefore have difficulty identifying that two SCIDs route
-   to the same server.
+   bits will therefore have difficulty identifying that two Server CIDs
+   route to the same server.
+
+
+
+
+
+Duke & Banks            Expires 18 December 2020               [Page 10]
+
+Internet-Draft                   QUIC-LB                       June 2020
+
 
    Note also that not all Connection IDs are necessarily routable, as
    the computed modulus may not match one assigned to any server.  These
    DCIDs are non-compliant as described above.
-
-
-
-
-
-
-
-Duke & Banks            Expires 27 November 2020               [Page 10]
-
-Internet-Draft                   QUIC-LB                        May 2020
-
 
 4.2.3.  Server Actions
 
@@ -588,7 +592,7 @@ Internet-Draft                   QUIC-LB                        May 2020
    0                   1                   2                   3
    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |  First Octet  |            Nonce (X=64..144)                  |
+   |  First Octet  |            Nonce (X=64..128)                  |
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
    |                 Encrypted Server ID (Y=8..152-X)              |
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -603,20 +607,21 @@ Internet-Draft                   QUIC-LB                        May 2020
    pool, and determines a server ID length (in octets) sufficiently
    large to encode all server IDs, including potential future servers.
 
+
+
+
+
+
+
+Duke & Banks            Expires 18 December 2020               [Page 11]
+
+Internet-Draft                   QUIC-LB                       June 2020
+
+
    The configuration agent also selects a nonce length and an 16-octet
    AES-ECB key to use for connection ID decryption.  The nonce length
    MUST be at least 8 octets and no more than 16 octets.  The nonce
    length and server ID length MUST sum to 19 or fewer octets.
-
-
-
-
-
-
-Duke & Banks            Expires 27 November 2020               [Page 11]
-
-Internet-Draft                   QUIC-LB                        May 2020
-
 
 4.3.2.  Load Balancer Actions
 
@@ -664,14 +669,9 @@ Internet-Draft                   QUIC-LB                        May 2020
 
 
 
-
-
-
-
-
-Duke & Banks            Expires 27 November 2020               [Page 12]
+Duke & Banks            Expires 18 December 2020               [Page 12]
 
-Internet-Draft                   QUIC-LB                        May 2020
+Internet-Draft                   QUIC-LB                       June 2020
 
 
 4.4.  Block Cipher CID Algorithm
@@ -685,11 +685,11 @@ Internet-Draft                   QUIC-LB                        May 2020
    0                   1                   2                   3
    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |  First octet  |       Encrypted server ID (X=8..144)          |
+   |  First octet  |       Encrypted server ID (X=8..128)          |
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |             Encrypted Zero Padding (Y=0..144-X)               |
+   |             Encrypted Zero Padding (Y=0..128-X)               |
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |           Encrypted bits for server use (144-X-Y)             |
+   |           Encrypted bits for server use (128-X-Y)             |
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
    |           Unencrypted bits for server use (0..24)             |
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -725,9 +725,9 @@ Internet-Draft                   QUIC-LB                        May 2020
 
 
 
-Duke & Banks            Expires 27 November 2020               [Page 13]
+Duke & Banks            Expires 18 December 2020               [Page 13]
 
-Internet-Draft                   QUIC-LB                        May 2020
+Internet-Draft                   QUIC-LB                       June 2020
 
 
 4.4.3.  Server Actions
@@ -781,9 +781,9 @@ Internet-Draft                   QUIC-LB                        May 2020
 
 
 
-Duke & Banks            Expires 27 November 2020               [Page 14]
+Duke & Banks            Expires 18 December 2020               [Page 14]
 
-Internet-Draft                   QUIC-LB                        May 2020
+Internet-Draft                   QUIC-LB                       June 2020
 
 
 5.1.  Common Requirements
@@ -837,9 +837,9 @@ Internet-Draft                   QUIC-LB                        May 2020
 
 
 
-Duke & Banks            Expires 27 November 2020               [Page 15]
+Duke & Banks            Expires 18 December 2020               [Page 15]
 
-Internet-Draft                   QUIC-LB                        May 2020
+Internet-Draft                   QUIC-LB                       June 2020
 
 
    0                   1                   2                   3
@@ -893,9 +893,9 @@ Internet-Draft                   QUIC-LB                        May 2020
 
 
 
-Duke & Banks            Expires 27 November 2020               [Page 16]
+Duke & Banks            Expires 18 December 2020               [Page 16]
 
-Internet-Draft                   QUIC-LB                        May 2020
+Internet-Draft                   QUIC-LB                       June 2020
 
 
    In inactive mode, the service MUST forward all packets that have no
@@ -949,9 +949,9 @@ Internet-Draft                   QUIC-LB                        May 2020
 
 
 
-Duke & Banks            Expires 27 November 2020               [Page 17]
+Duke & Banks            Expires 18 December 2020               [Page 17]
 
-Internet-Draft                   QUIC-LB                        May 2020
+Internet-Draft                   QUIC-LB                       June 2020
 
 
    0                   1                   2                   3
@@ -1005,9 +1005,9 @@ Internet-Draft                   QUIC-LB                        May 2020
 
 
 
-Duke & Banks            Expires 27 November 2020               [Page 18]
+Duke & Banks            Expires 18 December 2020               [Page 18]
 
-Internet-Draft                   QUIC-LB                        May 2020
+Internet-Draft                   QUIC-LB                       June 2020
 
 
    Opaque Data: The server may use this field to encode additional
@@ -1061,9 +1061,9 @@ Internet-Draft                   QUIC-LB                        May 2020
 
 
 
-Duke & Banks            Expires 27 November 2020               [Page 19]
+Duke & Banks            Expires 18 December 2020               [Page 19]
 
-Internet-Draft                   QUIC-LB                        May 2020
+Internet-Draft                   QUIC-LB                       June 2020
 
 
    For Obfuscated CID Routing, this consists of the Routing Bits,
@@ -1117,9 +1117,9 @@ Internet-Draft                   QUIC-LB                        May 2020
 
 
 
-Duke & Banks            Expires 27 November 2020               [Page 20]
+Duke & Banks            Expires 18 December 2020               [Page 20]
 
-Internet-Draft                   QUIC-LB                        May 2020
+Internet-Draft                   QUIC-LB                       June 2020
 
 
     uint2    config_rotation_bits;
@@ -1173,9 +1173,9 @@ Internet-Draft                   QUIC-LB                        May 2020
 
 
 
-Duke & Banks            Expires 27 November 2020               [Page 21]
+Duke & Banks            Expires 18 December 2020               [Page 21]
 
-Internet-Draft                   QUIC-LB                        May 2020
+Internet-Draft                   QUIC-LB                       June 2020
 
 
    If each load balancer is assigned a range of server IDs that is a
@@ -1229,19 +1229,18 @@ Internet-Draft                   QUIC-LB                        May 2020
 
 
 
-Duke & Banks            Expires 27 November 2020               [Page 22]
+Duke & Banks            Expires 18 December 2020               [Page 22]
 
-Internet-Draft                   QUIC-LB                        May 2020
+Internet-Draft                   QUIC-LB                       June 2020
 
 
-   *  In this interval, some exposed fields (e.g.  UDP address and port,
-      client- generated destination Connection ID) remain constant for
-      all packets in the connection.  For example, 0RTT and Initial
-      packets use the same DCIDs and ports.  While this document does
-      not update the commitments in [QUIC-INVARIANTS], the authors
-      believe that the listed examples are a likely set of constants
-      that load balancers can use with minimal risk of version-
-      dependence.
+   *  While the client is using DCIDs it generated, some exposed fields
+      (IP address, UDP port, client-generated destination Connection ID)
+      remain constant for all packets sent on the same connection.
+      While this document does not update the commitments in
+      [QUIC-INVARIANTS], the authors believe that the listed examples
+      are a likely set of constants that load balancers can use with
+      minimal risk of version-dependence.
 
    If these assumptions are invalid, this specification is likely to
    lead to loss of packets that contain non-compliant DCIDs, and in
@@ -1285,9 +1284,10 @@ Internet-Draft                   QUIC-LB                        May 2020
 
 
 
-Duke & Banks            Expires 27 November 2020               [Page 23]
+
+Duke & Banks            Expires 18 December 2020               [Page 23]
 
-Internet-Draft                   QUIC-LB                        May 2020
+Internet-Draft                   QUIC-LB                       June 2020
 
 
    Were this analysis to obtain the server encoding, then on-path
@@ -1341,9 +1341,9 @@ Internet-Draft                   QUIC-LB                        May 2020
 
 
 
-Duke & Banks            Expires 27 November 2020               [Page 24]
+Duke & Banks            Expires 18 December 2020               [Page 24]
 
-Internet-Draft                   QUIC-LB                        May 2020
+Internet-Draft                   QUIC-LB                       June 2020
 
 
 Appendix A.  Load Balancer Test Vectors
@@ -1397,9 +1397,9 @@ A.1.  Obfuscated Connection ID Algorithm
 
 
 
-Duke & Banks            Expires 27 November 2020               [Page 25]
+Duke & Banks            Expires 18 December 2020               [Page 25]
 
-Internet-Draft                   QUIC-LB                        May 2020
+Internet-Draft                   QUIC-LB                       June 2020
 
 
    cid 8b70b8c69e40ef2f3f8937e817 sid d3
@@ -1453,9 +1453,9 @@ A.2.  Stream Cipher Connection ID Algorithm
 
 
 
-Duke & Banks            Expires 27 November 2020               [Page 26]
+Duke & Banks            Expires 18 December 2020               [Page 26]
 
-Internet-Draft                   QUIC-LB                        May 2020
+Internet-Draft                   QUIC-LB                       June 2020
 
 
    cr_bits 0x0 length_self_encoding: n nonce_len 8 sid_len 4 key
@@ -1509,9 +1509,9 @@ A.3.  Block Cipher Connection ID Algorithm
 
 
 
-Duke & Banks            Expires 27 November 2020               [Page 27]
+Duke & Banks            Expires 18 December 2020               [Page 27]
 
-Internet-Draft                   QUIC-LB                        May 2020
+Internet-Draft                   QUIC-LB                       June 2020
 
 
    cid: 53c48f7884d73fd9016f63e50453bfd9bcfc637d sid: b46b68
@@ -1565,9 +1565,9 @@ C.2.  since-draft-ietf-quic-load-balancers-01
 
 
 
-Duke & Banks            Expires 27 November 2020               [Page 28]
+Duke & Banks            Expires 18 December 2020               [Page 28]
 
-Internet-Draft                   QUIC-LB                        May 2020
+Internet-Draft                   QUIC-LB                       June 2020
 
 
 C.3.  since-draft-ietf-quic-load-balancers-00
@@ -1621,9 +1621,9 @@ C.8.  Since draft-duke-quic-load-balancers-02
 
 
 
-Duke & Banks            Expires 27 November 2020               [Page 29]
+Duke & Banks            Expires 18 December 2020               [Page 29]
 
-Internet-Draft                   QUIC-LB                        May 2020
+Internet-Draft                   QUIC-LB                       June 2020
 
 
 C.9.  Since draft-duke-quic-load-balancers-01
@@ -1677,4 +1677,4 @@ Authors' Addresses
 
 
 
-Duke & Banks            Expires 27 November 2020               [Page 30]
+Duke & Banks            Expires 18 December 2020               [Page 30]
