@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2020-06-16T22:01:24.211577+00:00",
+  "timestamp": "2020-06-17T16:57:41.388576+00:00",
   "repo": "quicwg/load-balancers",
   "labels": [
     {
@@ -522,6 +522,22 @@
       "body": "Add a security consideration to avoid the following scenario:\r\n\r\nMyCloudProvider has a single QUIC-LB config for all its load balancers. It rotates keys periodically, etc, but everyone gets the same config. Obviously, all the attacker has to do is open an account with MyCloudProvider and it is able to recover all the server IDs.\r\n\r\nConfigs ought to be restricted to load balancers serving a finite set of servers. It is possible another MyCloudProvider customer is in the pool behind that load balancer, but that's already a privileged position as already described in the draft.\r\n\r\nObviously, this will require some wordsmithing, as the statement above isn't very precise.",
       "createdAt": "2020-06-12T16:00:00Z",
       "updatedAt": "2020-06-12T16:00:00Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 28,
+      "id": "MDU6SXNzdWU2NDAwMDg4NDM=",
+      "title": "Routing of ICMP Packet too big messages",
+      "url": "https://github.com/quicwg/load-balancers/issues/28",
+      "state": "OPEN",
+      "author": "martinduke",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "QUIC-LB LBs will not have the ability to properly route ICMP PTB messages without some additional work.\r\n\r\n1) Servers SHOULD prepend a garbage Handshake packet to their MSS Probes, so that the SCID is there.\r\n2) LBs SHOULD learn to parse these to extract the SCID and route them as they would a packet with that DCID.\r\n\r\nAlternatively, it could keep track of client IPs/ports and their mapping to servers.",
+      "createdAt": "2020-06-16T22:20:28Z",
+      "updatedAt": "2020-06-16T22:20:28Z",
       "closedAt": null,
       "comments": []
     }
@@ -1237,13 +1253,13 @@
       "labels": [],
       "body": "Carefully phrased language that considers @martinthomson 's suggestion that SCID may not be stable across versions, and tries to suggest (IP, port, DCID) as a suitable long header hash without making promises on behalf of quic-invariants.\r\n\r\nFixes #22.",
       "createdAt": "2020-05-26T18:01:03Z",
-      "updatedAt": "2020-05-27T01:45:24Z",
+      "updatedAt": "2020-06-17T16:21:53Z",
       "baseRepository": "quicwg/load-balancers",
       "baseRefName": "master",
-      "baseRefOid": "6b5ff625a09407fc4afe7c772c439fe5078ec8ac",
+      "baseRefOid": "1033d06b11f1fffcde778b40a0eed67748e6da6e",
       "headRepository": "quicwg/load-balancers",
       "headRefName": "noncompliant",
-      "headRefOid": "bc1b63801fb1b2102c100d34619b5df29b99158b",
+      "headRefOid": "3188d36de23b645c6a7281ee9e85e747d795ced2",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -1266,19 +1282,19 @@
               "originalPosition": 8,
               "body": "What interval?\r\n\r\n (I think that the list structure is working against you here.)",
               "createdAt": "2020-05-27T01:44:04Z",
-              "updatedAt": "2020-05-27T01:45:24Z"
+              "updatedAt": "2020-06-16T22:11:17Z"
             },
             {
               "originalPosition": 9,
               "body": "Don't use \"for example\" here.  You want to be precise.",
               "createdAt": "2020-05-27T01:44:41Z",
-              "updatedAt": "2020-05-27T01:45:24Z"
+              "updatedAt": "2020-06-16T22:11:17Z"
             },
             {
               "originalPosition": 10,
               "body": "for all packets sent on the same connection.",
               "createdAt": "2020-05-27T01:45:10Z",
-              "updatedAt": "2020-05-27T01:45:24Z"
+              "updatedAt": "2020-06-16T22:11:17Z"
             }
           ]
         }
@@ -1325,6 +1341,99 @@
           "comments": []
         }
       ]
+    },
+    {
+      "number": 29,
+      "id": "MDExOlB1bGxSZXF1ZXN0NDM1NTA4MTg1",
+      "title": "New Security Considerations",
+      "url": "https://github.com/quicwg/load-balancers/pull/29",
+      "state": "OPEN",
+      "author": "martinduke",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Added two sections to Security Considerations (Stateless Reset Oracle and Local Configurations Only). Fixes #9 and #27.",
+      "createdAt": "2020-06-16T22:53:50Z",
+      "updatedAt": "2020-06-17T16:57:11Z",
+      "baseRepository": "quicwg/load-balancers",
+      "baseRefName": "master",
+      "baseRefOid": "1033d06b11f1fffcde778b40a0eed67748e6da6e",
+      "headRepository": "quicwg/load-balancers",
+      "headRefName": "more-security",
+      "headRefOid": "de42903daf2d86fc8f7088ef04c82f90ce86d820",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDMyMDA2MTAw",
+          "commit": {
+            "abbreviatedOid": "7578c37"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "MEMBER",
+          "state": "COMMENTED",
+          "body": "Not sure about the first, but the oracle bit is good, assuming that the mechanisms in the draft actually provide for deterministic routing of the same DCID over the life of a connection.\r\n\r\nThe nuanced point here is that you sometimes end up in a state where a DCID no longer routes to the node that holds the connection, but it is OK if that is the result of an event that also caused the connection to become invalid.  The typical example here is that the node died.  In that case, a stateless reset is OK, because the connection cannot continue.\r\n\r\nI'll leave it to you as to whether you think that mentioning this case is worth doing.",
+          "createdAt": "2020-06-17T01:56:54Z",
+          "updatedAt": "2020-06-17T01:59:32Z",
+          "comments": [
+            {
+              "originalPosition": 7,
+              "body": "I don't think that the scope of this is very clear.  If the idea is that the cloud provider - the one who provides the load balancer - provides the same configuration to mutually distrustful customers, then there is a very important point to make.  But I'm not sure that this is clear from the text here.  \"enterprise\" isn't well connected to \"cloud provider\".",
+              "createdAt": "2020-06-17T01:56:54Z",
+              "updatedAt": "2020-06-17T16:56:57Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDMyNTg1Mjc0",
+          "commit": {
+            "abbreviatedOid": "7578c37"
+          },
+          "author": "martinduke",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-06-17T16:44:53Z",
+          "updatedAt": "2020-06-17T16:44:53Z",
+          "comments": [
+            {
+              "originalPosition": 7,
+              "body": "OK, I got rid of the word 'enterprise' and I think it's clearer now.",
+              "createdAt": "2020-06-17T16:44:53Z",
+              "updatedAt": "2020-06-17T16:56:57Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 30,
+      "id": "MDExOlB1bGxSZXF1ZXN0NDM1NTI0NTI5",
+      "title": "ICMP Packet routing",
+      "url": "https://github.com/quicwg/load-balancers/pull/30",
+      "state": "OPEN",
+      "author": "martinduke",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Added language about ICMP packets. Fixes #28.",
+      "createdAt": "2020-06-16T23:52:12Z",
+      "updatedAt": "2020-06-17T16:28:11Z",
+      "baseRepository": "quicwg/load-balancers",
+      "baseRefName": "master",
+      "baseRefOid": "1033d06b11f1fffcde778b40a0eed67748e6da6e",
+      "headRepository": "quicwg/load-balancers",
+      "headRefName": "icmp",
+      "headRefOid": "982dbcfcb4f2da076b21929a1e8845858dc38897",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
     }
   ]
 }
