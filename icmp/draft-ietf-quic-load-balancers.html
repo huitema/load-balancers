@@ -1701,11 +1701,11 @@ AES-ECB cipher.<a href="#section-4.4.3-2" class="pilcrow">¶</a></p>
 <a href="#section-5" class="section-number selfRef">5. </a><a href="#name-icmp-processing" class="section-name selfRef">ICMP Processing</a>
       </h2>
 <p id="section-5-1">For protocols where 4-tuple load balancing is sufficient, it is straightforward
-to deliver ICMP packets from the network to the correct server, by
-reading the IP and transport-layer headers to obtain the 4-tuple. When routing
-is based on connection ID, further measures are required, as most QUIC packets
-that trigger ICMP responses will only contain a client-generated connection ID
-that contains no routing information.<a href="#section-5-1" class="pilcrow">¶</a></p>
+to deliver ICMP packets from the network to the correct server, by reading the
+IP and transport-layer headers to obtain the 4-tuple. When routing is based on
+connection ID, further measures are required, as most QUIC packets that trigger
+ICMP responses will only contain a client-generated connection ID that contains
+no routing information.<a href="#section-5-1" class="pilcrow">¶</a></p>
 <p id="section-5-2">To solve this problem, load balancers MAY maintain a mapping of Client IP and
 port to server ID based on recently observed packets.<a href="#section-5-2" class="pilcrow">¶</a></p>
 <p id="section-5-3">Alternatively, servers MAY implement the technique described in Section 14.4.1
