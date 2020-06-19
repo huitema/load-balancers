@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2020-06-17T16:57:41.388576+00:00",
+  "timestamp": "2020-06-19T19:04:16.353578+00:00",
   "repo": "quicwg/load-balancers",
   "labels": [
     {
@@ -538,6 +538,22 @@
       "body": "QUIC-LB LBs will not have the ability to properly route ICMP PTB messages without some additional work.\r\n\r\n1) Servers SHOULD prepend a garbage Handshake packet to their MSS Probes, so that the SCID is there.\r\n2) LBs SHOULD learn to parse these to extract the SCID and route them as they would a packet with that DCID.\r\n\r\nAlternatively, it could keep track of client IPs/ports and their mapping to servers.",
       "createdAt": "2020-06-16T22:20:28Z",
       "updatedAt": "2020-06-16T22:20:28Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 31,
+      "id": "MDU6SXNzdWU2NDIxNTk3NDk=",
+      "title": "Add retry_source_connection_id to Retry Service Token Format",
+      "url": "https://github.com/quicwg/load-balancers/issues/31",
+      "state": "OPEN",
+      "author": "martinduke",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "The server now needs to include this field.\r\n\r\nFor the no-shared state service, we just need language that the Retry service needs to encode enough information validate the packet DCID as well and drop if it fails validation. If it does, the server MUST use the packet DCID in the retry_source_connection_id  TP.\r\n\r\nFor the shared state service, the retry source connection ID is going to have to be in the token. We might be able to compress this by xoring some fields; I'll think about it.",
+      "createdAt": "2020-06-19T18:45:31Z",
+      "updatedAt": "2020-06-19T18:45:31Z",
       "closedAt": null,
       "comments": []
     }
@@ -1421,19 +1437,40 @@
       "labels": [],
       "body": "Added language about ICMP packets. Fixes #28.",
       "createdAt": "2020-06-16T23:52:12Z",
-      "updatedAt": "2020-06-17T16:28:11Z",
+      "updatedAt": "2020-06-19T19:03:50Z",
       "baseRepository": "quicwg/load-balancers",
       "baseRefName": "master",
       "baseRefOid": "1033d06b11f1fffcde778b40a0eed67748e6da6e",
       "headRepository": "quicwg/load-balancers",
       "headRefName": "icmp",
-      "headRefOid": "982dbcfcb4f2da076b21929a1e8845858dc38897",
+      "headRefOid": "3a87c2bb4779bbff96855f0c6dc7888c93192ac1",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDM0Mjg0NzU2",
+          "commit": {
+            "abbreviatedOid": "982dbcf"
+          },
+          "author": "nibanks",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "Looks good to me. One minor suggestion on text change, but feel free to ignore it.",
+          "createdAt": "2020-06-19T18:57:42Z",
+          "updatedAt": "2020-06-19T18:58:47Z",
+          "comments": [
+            {
+              "originalPosition": 7,
+              "body": "```suggestion\r\nto deliver ICMP packets from the network to the correct server, by\r\n```",
+              "createdAt": "2020-06-19T18:57:42Z",
+              "updatedAt": "2020-06-19T19:03:50Z"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
