@@ -5,8 +5,8 @@
 QUIC                                                             M. Duke
 Internet-Draft                                         F5 Networks, Inc.
 Intended status: Standards Track                                N. Banks
-Expires: 21 December 2020                                      Microsoft
-                                                            19 June 2020
+Expires: 31 December 2020                                      Microsoft
+                                                            29 June 2020
 
 
             QUIC-LB: Generating Routable QUIC Connection IDs
@@ -53,12 +53,12 @@ Status of This Memo
 
 
 
-Duke & Banks            Expires 21 December 2020                [Page 1]
+Duke & Banks            Expires 31 December 2020                [Page 1]
 
 Internet-Draft                   QUIC-LB                       June 2020
 
 
-   This Internet-Draft will expire on 21 December 2020.
+   This Internet-Draft will expire on 31 December 2020.
 
 Copyright Notice
 
@@ -109,47 +109,47 @@ Table of Contents
 
 
 
-Duke & Banks            Expires 21 December 2020                [Page 2]
+Duke & Banks            Expires 31 December 2020                [Page 2]
 
 Internet-Draft                   QUIC-LB                       June 2020
 
 
-       6.2.1.  Configuration Agent Actions . . . . . . . . . . . . .  15
+       6.2.1.  Configuration Agent Actions . . . . . . . . . . . . .  16
        6.2.2.  Service Requirements  . . . . . . . . . . . . . . . .  16
        6.2.3.  Server Requirements . . . . . . . . . . . . . . . . .  17
      6.3.  Shared-State Retry Service  . . . . . . . . . . . . . . .  18
-       6.3.1.  Configuration Agent Actions . . . . . . . . . . . . .  19
-       6.3.2.  Service Requirements  . . . . . . . . . . . . . . . .  19
-       6.3.3.  Server Requirements . . . . . . . . . . . . . . . . .  19
-   7.  Configuration Requirements  . . . . . . . . . . . . . . . . .  20
-   8.  Additional Use Cases  . . . . . . . . . . . . . . . . . . . .  21
-     8.1.  Load balancer chains  . . . . . . . . . . . . . . . . . .  21
-     8.2.  Moving connections between servers  . . . . . . . . . . .  22
-   9.  Version Invariance of QUIC-LB . . . . . . . . . . . . . . . .  22
-   10. Security Considerations . . . . . . . . . . . . . . . . . . .  23
-     10.1.  Attackers not between the load balancer and server . . .  23
-     10.2.  Attackers between the load balancer and server . . . . .  24
-   11. IANA Considerations . . . . . . . . . . . . . . . . . . . . .  24
-   12. References  . . . . . . . . . . . . . . . . . . . . . . . . .  24
-     12.1.  Normative References . . . . . . . . . . . . . . . . . .  24
-     12.2.  Informative References . . . . . . . . . . . . . . . . .  24
-   Appendix A.  Load Balancer Test Vectors . . . . . . . . . . . . .  24
-     A.1.  Obfuscated Connection ID Algorithm  . . . . . . . . . . .  25
-     A.2.  Stream Cipher Connection ID Algorithm . . . . . . . . . .  26
-     A.3.  Block Cipher Connection ID Algorithm  . . . . . . . . . .  27
-   Appendix B.  Acknowledgments  . . . . . . . . . . . . . . . . . .  28
-   Appendix C.  Change Log . . . . . . . . . . . . . . . . . . . . .  28
-     C.1.  since-draft-ietf-quic-load-balancers-02 . . . . . . . . .  28
-     C.2.  since-draft-ietf-quic-load-balancers-01 . . . . . . . . .  28
-     C.3.  since-draft-ietf-quic-load-balancers-00 . . . . . . . . .  28
-     C.4.  Since draft-duke-quic-load-balancers-06 . . . . . . . . .  28
-     C.5.  Since draft-duke-quic-load-balancers-05 . . . . . . . . .  28
-     C.6.  Since draft-duke-quic-load-balancers-04 . . . . . . . . .  29
-     C.7.  Since draft-duke-quic-load-balancers-03 . . . . . . . . .  29
-     C.8.  Since draft-duke-quic-load-balancers-02 . . . . . . . . .  29
-     C.9.  Since draft-duke-quic-load-balancers-01 . . . . . . . . .  29
-     C.10. Since draft-duke-quic-load-balancers-00 . . . . . . . . .  29
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  30
+       6.3.1.  Configuration Agent Actions . . . . . . . . . . . . .  20
+       6.3.2.  Service Requirements  . . . . . . . . . . . . . . . .  20
+       6.3.3.  Server Requirements . . . . . . . . . . . . . . . . .  20
+   7.  Configuration Requirements  . . . . . . . . . . . . . . . . .  21
+   8.  Additional Use Cases  . . . . . . . . . . . . . . . . . . . .  22
+     8.1.  Load balancer chains  . . . . . . . . . . . . . . . . . .  22
+     8.2.  Moving connections between servers  . . . . . . . . . . .  23
+   9.  Version Invariance of QUIC-LB . . . . . . . . . . . . . . . .  23
+   10. Security Considerations . . . . . . . . . . . . . . . . . . .  24
+     10.1.  Attackers not between the load balancer and server . . .  24
+     10.2.  Attackers between the load balancer and server . . . . .  25
+   11. IANA Considerations . . . . . . . . . . . . . . . . . . . . .  25
+   12. References  . . . . . . . . . . . . . . . . . . . . . . . . .  25
+     12.1.  Normative References . . . . . . . . . . . . . . . . . .  25
+     12.2.  Informative References . . . . . . . . . . . . . . . . .  25
+   Appendix A.  Load Balancer Test Vectors . . . . . . . . . . . . .  25
+     A.1.  Obfuscated Connection ID Algorithm  . . . . . . . . . . .  26
+     A.2.  Stream Cipher Connection ID Algorithm . . . . . . . . . .  27
+     A.3.  Block Cipher Connection ID Algorithm  . . . . . . . . . .  28
+   Appendix B.  Acknowledgments  . . . . . . . . . . . . . . . . . .  29
+   Appendix C.  Change Log . . . . . . . . . . . . . . . . . . . . .  29
+     C.1.  since-draft-ietf-quic-load-balancers-02 . . . . . . . . .  29
+     C.2.  since-draft-ietf-quic-load-balancers-01 . . . . . . . . .  29
+     C.3.  since-draft-ietf-quic-load-balancers-00 . . . . . . . . .  29
+     C.4.  Since draft-duke-quic-load-balancers-06 . . . . . . . . .  29
+     C.5.  Since draft-duke-quic-load-balancers-05 . . . . . . . . .  29
+     C.6.  Since draft-duke-quic-load-balancers-04 . . . . . . . . .  30
+     C.7.  Since draft-duke-quic-load-balancers-03 . . . . . . . . .  30
+     C.8.  Since draft-duke-quic-load-balancers-02 . . . . . . . . .  30
+     C.9.  Since draft-duke-quic-load-balancers-01 . . . . . . . . .  30
+     C.10. Since draft-duke-quic-load-balancers-00 . . . . . . . . .  30
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  31
 
 1.  Introduction
 
@@ -165,7 +165,7 @@ Internet-Draft                   QUIC-LB                       June 2020
 
 
 
-Duke & Banks            Expires 21 December 2020                [Page 3]
+Duke & Banks            Expires 31 December 2020                [Page 3]
 
 Internet-Draft                   QUIC-LB                       June 2020
 
@@ -221,7 +221,7 @@ Internet-Draft                   QUIC-LB                       June 2020
 
 
 
-Duke & Banks            Expires 21 December 2020                [Page 4]
+Duke & Banks            Expires 31 December 2020                [Page 4]
 
 Internet-Draft                   QUIC-LB                       June 2020
 
@@ -277,7 +277,7 @@ Internet-Draft                   QUIC-LB                       June 2020
 
 
 
-Duke & Banks            Expires 21 December 2020                [Page 5]
+Duke & Banks            Expires 31 December 2020                [Page 5]
 
 Internet-Draft                   QUIC-LB                       June 2020
 
@@ -333,7 +333,7 @@ Internet-Draft                   QUIC-LB                       June 2020
 
 
 
-Duke & Banks            Expires 21 December 2020                [Page 6]
+Duke & Banks            Expires 31 December 2020                [Page 6]
 
 Internet-Draft                   QUIC-LB                       June 2020
 
@@ -389,7 +389,7 @@ Internet-Draft                   QUIC-LB                       June 2020
 
 
 
-Duke & Banks            Expires 21 December 2020                [Page 7]
+Duke & Banks            Expires 31 December 2020                [Page 7]
 
 Internet-Draft                   QUIC-LB                       June 2020
 
@@ -445,7 +445,7 @@ Internet-Draft                   QUIC-LB                       June 2020
 
 
 
-Duke & Banks            Expires 21 December 2020                [Page 8]
+Duke & Banks            Expires 31 December 2020                [Page 8]
 
 Internet-Draft                   QUIC-LB                       June 2020
 
@@ -501,7 +501,7 @@ Internet-Draft                   QUIC-LB                       June 2020
 
 
 
-Duke & Banks            Expires 21 December 2020                [Page 9]
+Duke & Banks            Expires 31 December 2020                [Page 9]
 
 Internet-Draft                   QUIC-LB                       June 2020
 
@@ -557,7 +557,7 @@ Internet-Draft                   QUIC-LB                       June 2020
 
 
 
-Duke & Banks            Expires 21 December 2020               [Page 10]
+Duke & Banks            Expires 31 December 2020               [Page 10]
 
 Internet-Draft                   QUIC-LB                       June 2020
 
@@ -613,7 +613,7 @@ Internet-Draft                   QUIC-LB                       June 2020
 
 
 
-Duke & Banks            Expires 21 December 2020               [Page 11]
+Duke & Banks            Expires 31 December 2020               [Page 11]
 
 Internet-Draft                   QUIC-LB                       June 2020
 
@@ -669,7 +669,7 @@ Internet-Draft                   QUIC-LB                       June 2020
 
 
 
-Duke & Banks            Expires 21 December 2020               [Page 12]
+Duke & Banks            Expires 31 December 2020               [Page 12]
 
 Internet-Draft                   QUIC-LB                       June 2020
 
@@ -725,7 +725,7 @@ Internet-Draft                   QUIC-LB                       June 2020
 
 
 
-Duke & Banks            Expires 21 December 2020               [Page 13]
+Duke & Banks            Expires 31 December 2020               [Page 13]
 
 Internet-Draft                   QUIC-LB                       June 2020
 
@@ -781,7 +781,7 @@ Internet-Draft                   QUIC-LB                       June 2020
 
 
 
-Duke & Banks            Expires 21 December 2020               [Page 14]
+Duke & Banks            Expires 31 December 2020               [Page 14]
 
 Internet-Draft                   QUIC-LB                       June 2020
 
@@ -789,6 +789,10 @@ Internet-Draft                   QUIC-LB                       June 2020
    either verify the address itself (with the server trusting this
    verification) or make sure there is common context for the server to
    verify the address using a service-generated token.
+
+   The service must also communicate the source connection ID of the
+   Retry packet to the server so that it can include it in a transport
+   parameter for client verification.
 
    There are two different mechanisms to allow offload of DoS mitigation
    to a trusted network service.  One requires no shared state; the
@@ -827,20 +831,21 @@ Internet-Draft                   QUIC-LB                       June 2020
    packets (codepoint '0') and tokens from NEW_TOKEN frames (codepoint
    '1').
 
+
+
+
+
+
+
+Duke & Banks            Expires 31 December 2020               [Page 15]
+
+Internet-Draft                   QUIC-LB                       June 2020
+
+
 6.2.1.  Configuration Agent Actions
 
    The configuration agent distributes a list of QUIC versions to be
    served by the Retry Service.
-
-
-
-
-
-
-Duke & Banks            Expires 21 December 2020               [Page 15]
-
-Internet-Draft                   QUIC-LB                       June 2020
-
 
 6.2.2.  Service Requirements
 
@@ -861,11 +866,15 @@ Internet-Draft                   QUIC-LB                       June 2020
    0                   1                   2                   3
    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |0| ODCIL (7) |  Original Destination Connection ID (0..160)    |
+   |0| ODCIL (7) |   RSCIL (8)   |
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |           Original Destination Connection ID (...)            |
+   |        Original Destination Connection ID (0..160)            |
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   ...
+   |                             ...                               |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |              Retry Source Connection ID (0..160)              |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                             ...                               |
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
    |                     Opaque Data (variable)                    |
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -879,36 +888,40 @@ Internet-Draft                   QUIC-LB                       June 2020
    triggering Initial packet.  This is in cleartext to be readable for
    the server, but authenticated later in the token.
 
-   Original Destination Connection ID: This also in cleartext and
-   authenticated later.
-
-   Opaque Data: This data MUST contain encrypted information that allows
-   the retry service to validate the client's IP address, in accordance
-   with the QUIC specification.  It MUST also encode a secure hash of
-   the original destination connection ID field to verify that this
-   field has not been edited.
+   RSCIL: The retry source connection ID length.
 
 
 
 
-
-
-Duke & Banks            Expires 21 December 2020               [Page 16]
+Duke & Banks            Expires 31 December 2020               [Page 16]
 
 Internet-Draft                   QUIC-LB                       June 2020
 
 
+   Original Destination Connection ID: This also in cleartext and
+   authenticated later.
+
+   Retry Source Connection ID: This also in cleartext and authenticated
+   later.
+
+   Opaque Data: This data MUST contain encrypted information that allows
+   the retry service to validate the client's IP address, in accordance
+   with the QUIC specification.  It MUST also provide a
+   cryptographically secure means to validate the integrity of the
+   entire token.
+
    Upon receipt of an Initial packet with a token that begins with '0',
    the retry service MUST validate the token in accordance with the QUIC
-   specification.  It must also verify that the secure hash of the
-   Connect ID is correct.  If incorrect, the token is invalid.
+   specification.
 
    In active mode, the service MUST issue Retry packets for all Client
    initial packets that contain no token, or a token that has the first
    bit set to '1'.  It MUST NOT forward the packet to the server.  The
    service MUST validate all tokens with the first bit set to '0'.  If
    successful, the service MUST forward the packet with the token
-   intact.  If unsuccessful, it MUST drop the packet.
+   intact.  If unsuccessful, it MUST drop the packet.  The Retry Service
+   MAY send an Initial Packet containing a CONNECTION_CLOSE frame with
+   the INVALID_TOKEN error code when dropping the packet.
 
    Note that this scheme has a performance drawback.  When the retry
    service is in active mode, clients with a token from a NEW_TOKEN
@@ -933,6 +946,14 @@ Internet-Draft                   QUIC-LB                       June 2020
    packets for a QUIC version the retry service understands.  It MAY
    send Retry for QUIC versions the Retry Service does not understand.
 
+
+
+
+Duke & Banks            Expires 31 December 2020               [Page 17]
+
+Internet-Draft                   QUIC-LB                       June 2020
+
+
    Tokens sent in NEW_TOKEN frames MUST have the first bit be set to
    '1'.
 
@@ -942,17 +963,8 @@ Internet-Draft                   QUIC-LB                       June 2020
    receives an Initial Packet with the first bit to '0', it is a Retry
    token and the server MUST NOT attempt to validate it.  Instead, it
    MUST assume the address is validated and MUST extract the Original
-   Destination Connection ID, assuming the format described in
-   Section 6.2.2.
-
-
-
-
-
-Duke & Banks            Expires 21 December 2020               [Page 17]
-
-Internet-Draft                   QUIC-LB                       June 2020
-
+   Destination Connection ID and Retry Source Connection ID, assuming
+   the format described in Section 6.2.2.
 
 6.3.  Shared-State Retry Service
 
@@ -971,17 +983,50 @@ Internet-Draft                   QUIC-LB                       June 2020
    token key.  If the token is not a multiple of 16 octets, the last
    block is padded with zeroes.
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Duke & Banks            Expires 31 December 2020               [Page 18]
+
+Internet-Draft                   QUIC-LB                       June 2020
+
+
    0                   1                   2                   3
    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |    ODCIL    |   Original Destination Connection ID (0..160)   |
+   |    ODCIL    |      RSCIL    |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |        Original Destination Connection ID (0..160)            |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                             ...                               |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |              Retry Source Connection ID (0..160)              |
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
    |                             ...                               |
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
    |                                                               |
    +                                                               +
    |                                                               |
-   +                      Client IP Address (128)                  +
+   +                    Client IP Address (128)                    +
    |                                                               |
    +                                                               +
    |                                                               |
@@ -1003,18 +1048,26 @@ Internet-Draft                   QUIC-LB                       June 2020
 
    The tokens have the following fields:
 
+   ODCIL: The original destination connection ID length.  Tokens in
+   NEW_TOKEN frames MUST set this field to zero.
+
+   RSCIL: The retry source connection ID length.  Tokens in NEW_TOKEN
+   frames MUST set this field to zero.
+
+   Original Destination Connection ID: The server or Retry Service
+   copies this from the field in the client Initial packet.
 
 
-Duke & Banks            Expires 21 December 2020               [Page 18]
+
+
+
+Duke & Banks            Expires 31 December 2020               [Page 19]
 
 Internet-Draft                   QUIC-LB                       June 2020
 
 
-   ODCIL: The original destination connection ID length.  Tokens in
-   NEW_TOKEN frames MUST set this field to zero.
-
-   Original Destination Connection ID: This is copied from the field in
-   the client Initial packet.
+   Retry Source Connection ID: The server or Retry service copies this
+   from the Source Connection ID of the Retry packet.
 
    Client IP Address: The source IP address from the triggering Initial
    packet.  The client IP address is 16 octets.  If an IPv4 address, the
@@ -1061,13 +1114,22 @@ Internet-Draft                   QUIC-LB                       June 2020
 
 
 
-Duke & Banks            Expires 21 December 2020               [Page 19]
+
+
+
+Duke & Banks            Expires 31 December 2020               [Page 20]
 
 Internet-Draft                   QUIC-LB                       June 2020
 
 
-   A server MUST NOT send a Retry packet in response to an Initial
-   packet that contains a retry token.
+   After decrypting the token, the server uses the corresponding fields
+   to populate the original_destination_connection_id transport
+   parameter, with a length equal to ODCIL, and the
+   retry_source_connection_id transport parameter, with length equal to
+   RSCIL.
+
+   As discussed in [QUIC-TRANSPORT], a server MUST NOT send a Retry
+   packet in response to an Initial packet that contains a retry token.
 
 7.  Configuration Requirements
 
@@ -1111,13 +1173,7 @@ Internet-Draft                   QUIC-LB                       June 2020
 
 
 
-
-
-
-
-
-
-Duke & Banks            Expires 21 December 2020               [Page 20]
+Duke & Banks            Expires 31 December 2020               [Page 21]
 
 Internet-Draft                   QUIC-LB                       June 2020
 
@@ -1173,7 +1229,7 @@ Internet-Draft                   QUIC-LB                       June 2020
 
 
 
-Duke & Banks            Expires 21 December 2020               [Page 21]
+Duke & Banks            Expires 31 December 2020               [Page 22]
 
 Internet-Draft                   QUIC-LB                       June 2020
 
@@ -1229,7 +1285,7 @@ Internet-Draft                   QUIC-LB                       June 2020
 
 
 
-Duke & Banks            Expires 21 December 2020               [Page 22]
+Duke & Banks            Expires 31 December 2020               [Page 23]
 
 Internet-Draft                   QUIC-LB                       June 2020
 
@@ -1285,7 +1341,7 @@ Internet-Draft                   QUIC-LB                       June 2020
 
 
 
-Duke & Banks            Expires 21 December 2020               [Page 23]
+Duke & Banks            Expires 31 December 2020               [Page 24]
 
 Internet-Draft                   QUIC-LB                       June 2020
 
@@ -1341,7 +1397,7 @@ Appendix A.  Load Balancer Test Vectors
 
 
 
-Duke & Banks            Expires 21 December 2020               [Page 24]
+Duke & Banks            Expires 31 December 2020               [Page 25]
 
 Internet-Draft                   QUIC-LB                       June 2020
 
@@ -1397,7 +1453,7 @@ A.1.  Obfuscated Connection ID Algorithm
 
 
 
-Duke & Banks            Expires 21 December 2020               [Page 25]
+Duke & Banks            Expires 31 December 2020               [Page 26]
 
 Internet-Draft                   QUIC-LB                       June 2020
 
@@ -1453,7 +1509,7 @@ A.2.  Stream Cipher Connection ID Algorithm
 
 
 
-Duke & Banks            Expires 21 December 2020               [Page 26]
+Duke & Banks            Expires 31 December 2020               [Page 27]
 
 Internet-Draft                   QUIC-LB                       June 2020
 
@@ -1509,7 +1565,7 @@ A.3.  Block Cipher Connection ID Algorithm
 
 
 
-Duke & Banks            Expires 21 December 2020               [Page 27]
+Duke & Banks            Expires 31 December 2020               [Page 28]
 
 Internet-Draft                   QUIC-LB                       June 2020
 
@@ -1565,7 +1621,7 @@ C.5.  Since draft-duke-quic-load-balancers-05
 
 
 
-Duke & Banks            Expires 21 December 2020               [Page 28]
+Duke & Banks            Expires 31 December 2020               [Page 29]
 
 Internet-Draft                   QUIC-LB                       June 2020
 
@@ -1621,7 +1677,7 @@ C.10.  Since draft-duke-quic-load-balancers-00
 
 
 
-Duke & Banks            Expires 21 December 2020               [Page 29]
+Duke & Banks            Expires 31 December 2020               [Page 30]
 
 Internet-Draft                   QUIC-LB                       June 2020
 
@@ -1677,4 +1733,4 @@ Authors' Addresses
 
 
 
-Duke & Banks            Expires 21 December 2020               [Page 30]
+Duke & Banks            Expires 31 December 2020               [Page 31]
