@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2020-06-19T19:04:16.353578+00:00",
+  "timestamp": "2020-06-29T19:12:31.925964+00:00",
   "repo": "quicwg/load-balancers",
   "labels": [
     {
@@ -530,15 +530,15 @@
       "id": "MDU6SXNzdWU2NDAwMDg4NDM=",
       "title": "Routing of ICMP Packet too big messages",
       "url": "https://github.com/quicwg/load-balancers/issues/28",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "martinduke",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "QUIC-LB LBs will not have the ability to properly route ICMP PTB messages without some additional work.\r\n\r\n1) Servers SHOULD prepend a garbage Handshake packet to their MSS Probes, so that the SCID is there.\r\n2) LBs SHOULD learn to parse these to extract the SCID and route them as they would a packet with that DCID.\r\n\r\nAlternatively, it could keep track of client IPs/ports and their mapping to servers.",
       "createdAt": "2020-06-16T22:20:28Z",
-      "updatedAt": "2020-06-16T22:20:28Z",
-      "closedAt": null,
+      "updatedAt": "2020-06-19T19:07:01Z",
+      "closedAt": "2020-06-19T19:07:01Z",
       "comments": []
     },
     {
@@ -546,15 +546,15 @@
       "id": "MDU6SXNzdWU2NDIxNTk3NDk=",
       "title": "Add retry_source_connection_id to Retry Service Token Format",
       "url": "https://github.com/quicwg/load-balancers/issues/31",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "martinduke",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "The server now needs to include this field.\r\n\r\nFor the no-shared state service, we just need language that the Retry service needs to encode enough information validate the packet DCID as well and drop if it fails validation. If it does, the server MUST use the packet DCID in the retry_source_connection_id  TP.\r\n\r\nFor the shared state service, the retry source connection ID is going to have to be in the token. We might be able to compress this by xoring some fields; I'll think about it.",
       "createdAt": "2020-06-19T18:45:31Z",
-      "updatedAt": "2020-06-19T18:45:31Z",
-      "closedAt": null,
+      "updatedAt": "2020-06-29T19:11:43Z",
+      "closedAt": "2020-06-29T19:11:43Z",
       "comments": []
     }
   ],
@@ -1430,24 +1430,26 @@
       "id": "MDExOlB1bGxSZXF1ZXN0NDM1NTI0NTI5",
       "title": "ICMP Packet routing",
       "url": "https://github.com/quicwg/load-balancers/pull/30",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "martinduke",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "Added language about ICMP packets. Fixes #28.",
       "createdAt": "2020-06-16T23:52:12Z",
-      "updatedAt": "2020-06-19T19:03:50Z",
+      "updatedAt": "2020-06-19T19:07:02Z",
       "baseRepository": "quicwg/load-balancers",
       "baseRefName": "master",
       "baseRefOid": "1033d06b11f1fffcde778b40a0eed67748e6da6e",
       "headRepository": "quicwg/load-balancers",
       "headRefName": "icmp",
-      "headRefOid": "3a87c2bb4779bbff96855f0c6dc7888c93192ac1",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "c20d3c29dcde8a4067a0f381444ff8fa13b98756",
+      "closedAt": "2020-06-19T19:07:01Z",
+      "mergedAt": "2020-06-19T19:07:01Z",
+      "mergedBy": "martinduke",
+      "mergeCommit": {
+        "oid": "9ae14595a863b0c41b5a72925a5b791091c60321"
+      },
       "comments": [],
       "reviews": [
         {
@@ -1466,9 +1468,51 @@
               "originalPosition": 7,
               "body": "```suggestion\r\nto deliver ICMP packets from the network to the correct server, by\r\n```",
               "createdAt": "2020-06-19T18:57:42Z",
-              "updatedAt": "2020-06-19T19:03:50Z"
+              "updatedAt": "2020-06-19T19:05:50Z"
             }
           ]
+        }
+      ]
+    },
+    {
+      "number": 32,
+      "id": "MDExOlB1bGxSZXF1ZXN0NDM3MzQyNzI1",
+      "title": "Add retry_source_connection_id to tokens",
+      "url": "https://github.com/quicwg/load-balancers/pull/32",
+      "state": "MERGED",
+      "author": "martinduke",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "After thinking it through, various XOR schemes were extremely vulnerable to manipulation, so I went with a brute force approach. Fixes #31.",
+      "createdAt": "2020-06-20T00:52:39Z",
+      "updatedAt": "2020-06-29T19:11:45Z",
+      "baseRepository": "quicwg/load-balancers",
+      "baseRefName": "master",
+      "baseRefOid": "9ae14595a863b0c41b5a72925a5b791091c60321",
+      "headRepository": "quicwg/load-balancers",
+      "headRefName": "retry-source-cid",
+      "headRefOid": "765f829f2d011aecaece012818cc969996b548af",
+      "closedAt": "2020-06-29T19:11:44Z",
+      "mergedAt": "2020-06-29T19:11:43Z",
+      "mergedBy": "martinduke",
+      "mergeCommit": {
+        "oid": "702833e7259b6e936492fa656b69115185beb560"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDM5NDI2MDUw",
+          "commit": {
+            "abbreviatedOid": "765f829"
+          },
+          "author": "nibanks",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2020-06-29T19:11:11Z",
+          "updatedAt": "2020-06-29T19:11:11Z",
+          "comments": []
         }
       ]
     }
