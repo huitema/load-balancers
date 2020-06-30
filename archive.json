@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2020-06-29T19:12:31.925964+00:00",
+  "timestamp": "2020-06-30T22:13:22.392281+00:00",
   "repo": "quicwg/load-balancers",
   "labels": [
     {
@@ -1269,7 +1269,7 @@
       "labels": [],
       "body": "Carefully phrased language that considers @martinthomson 's suggestion that SCID may not be stable across versions, and tries to suggest (IP, port, DCID) as a suitable long header hash without making promises on behalf of quic-invariants.\r\n\r\nFixes #22.",
       "createdAt": "2020-05-26T18:01:03Z",
-      "updatedAt": "2020-06-17T16:21:53Z",
+      "updatedAt": "2020-06-30T03:48:19Z",
       "baseRepository": "quicwg/load-balancers",
       "baseRefName": "master",
       "baseRefOid": "1033d06b11f1fffcde778b40a0eed67748e6da6e",
@@ -1311,6 +1311,26 @@
               "body": "for all packets sent on the same connection.",
               "createdAt": "2020-05-27T01:45:10Z",
               "updatedAt": "2020-06-16T22:11:17Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDM5NjQ5ODA4",
+          "commit": {
+            "abbreviatedOid": "3188d36"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "MEMBER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-06-30T03:48:18Z",
+          "updatedAt": "2020-06-30T03:48:19Z",
+          "comments": [
+            {
+              "originalPosition": 39,
+              "body": "As this aims to represent IETF consensus, we should be able to say something more concrete about this than \"the authors believe\" implies.\r\n\r\nI think that what can be said is that these assumption are made by this document and while it is not guaranteed that *every* QUIC version will conform to these assumptions, they are minimal and narrowly scoped.  This means that it is likely - and indeed desirable - for new versions of QUIC to conform to these expectations.  By doing so, a new version of QUIC will be able to use load balancers that conform to the design in this document.\r\n\r\nThat's a fairly compelling trade: make a small additional allowance to get all this stuff.  But it also means that you aren't constraining the design of QUIC versions that might not need or want involvement by a load balancer.",
+              "createdAt": "2020-06-30T03:48:18Z",
+              "updatedAt": "2020-06-30T03:48:19Z"
             }
           ]
         }
@@ -1370,13 +1390,13 @@
       "labels": [],
       "body": "Added two sections to Security Considerations (Stateless Reset Oracle and Local Configurations Only). Fixes #9 and #27.",
       "createdAt": "2020-06-16T22:53:50Z",
-      "updatedAt": "2020-06-17T16:57:11Z",
+      "updatedAt": "2020-06-30T22:12:58Z",
       "baseRepository": "quicwg/load-balancers",
       "baseRefName": "master",
       "baseRefOid": "1033d06b11f1fffcde778b40a0eed67748e6da6e",
       "headRepository": "quicwg/load-balancers",
       "headRefName": "more-security",
-      "headRefOid": "de42903daf2d86fc8f7088ef04c82f90ce86d820",
+      "headRefOid": "e5303161780fe67427f0074aa2ff756a95a6139e",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -1399,7 +1419,7 @@
               "originalPosition": 7,
               "body": "I don't think that the scope of this is very clear.  If the idea is that the cloud provider - the one who provides the load balancer - provides the same configuration to mutually distrustful customers, then there is a very important point to make.  But I'm not sure that this is clear from the text here.  \"enterprise\" isn't well connected to \"cloud provider\".",
               "createdAt": "2020-06-17T01:56:54Z",
-              "updatedAt": "2020-06-17T16:56:57Z"
+              "updatedAt": "2020-06-30T22:12:58Z"
             }
           ]
         },
@@ -1419,7 +1439,27 @@
               "originalPosition": 7,
               "body": "OK, I got rid of the word 'enterprise' and I think it's clearer now.",
               "createdAt": "2020-06-17T16:44:53Z",
-              "updatedAt": "2020-06-17T16:56:57Z"
+              "updatedAt": "2020-06-30T22:12:58Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDM5NTk5Mjg2",
+          "commit": {
+            "abbreviatedOid": "de42903"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "MEMBER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-06-30T01:03:12Z",
+          "updatedAt": "2020-06-30T03:48:36Z",
+          "comments": [
+            {
+              "originalPosition": 14,
+              "body": "\"as narrow as possible\" is not really going to achieve our security goals.  The requirement (and it's a requirement not merely a desideratum) is that mutually distrustful entities cannot acquire information that might be used to mount denial of service on each other.",
+              "createdAt": "2020-06-30T01:03:12Z",
+              "updatedAt": "2020-06-30T22:12:58Z"
             }
           ]
         }
