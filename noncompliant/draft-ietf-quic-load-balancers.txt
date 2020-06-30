@@ -5,8 +5,8 @@
 QUIC                                                             M. Duke
 Internet-Draft                                         F5 Networks, Inc.
 Intended status: Standards Track                                N. Banks
-Expires: 18 December 2020                                      Microsoft
-                                                            16 June 2020
+Expires: 1 January 2021                                        Microsoft
+                                                            30 June 2020
 
 
             QUIC-LB: Generating Routable QUIC Connection IDs
@@ -53,12 +53,12 @@ Status of This Memo
 
 
 
-Duke & Banks            Expires 18 December 2020                [Page 1]
+Duke & Banks             Expires 1 January 2021                 [Page 1]
 
 Internet-Draft                   QUIC-LB                       June 2020
 
 
-   This Internet-Draft will expire on 18 December 2020.
+   This Internet-Draft will expire on 1 January 2021.
 
 Copyright Notice
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Duke & Banks            Expires 18 December 2020                [Page 2]
+Duke & Banks             Expires 1 January 2021                 [Page 2]
 
 Internet-Draft                   QUIC-LB                       June 2020
 
@@ -165,7 +165,7 @@ Internet-Draft                   QUIC-LB                       June 2020
 
 
 
-Duke & Banks            Expires 18 December 2020                [Page 3]
+Duke & Banks             Expires 1 January 2021                 [Page 3]
 
 Internet-Draft                   QUIC-LB                       June 2020
 
@@ -221,7 +221,7 @@ Internet-Draft                   QUIC-LB                       June 2020
 
 
 
-Duke & Banks            Expires 18 December 2020                [Page 4]
+Duke & Banks             Expires 1 January 2021                 [Page 4]
 
 Internet-Draft                   QUIC-LB                       June 2020
 
@@ -277,7 +277,7 @@ Internet-Draft                   QUIC-LB                       June 2020
 
 
 
-Duke & Banks            Expires 18 December 2020                [Page 5]
+Duke & Banks             Expires 1 January 2021                 [Page 5]
 
 Internet-Draft                   QUIC-LB                       June 2020
 
@@ -333,7 +333,7 @@ Internet-Draft                   QUIC-LB                       June 2020
 
 
 
-Duke & Banks            Expires 18 December 2020                [Page 6]
+Duke & Banks             Expires 1 January 2021                 [Page 6]
 
 Internet-Draft                   QUIC-LB                       June 2020
 
@@ -389,7 +389,7 @@ Internet-Draft                   QUIC-LB                       June 2020
 
 
 
-Duke & Banks            Expires 18 December 2020                [Page 7]
+Duke & Banks             Expires 1 January 2021                 [Page 7]
 
 Internet-Draft                   QUIC-LB                       June 2020
 
@@ -445,7 +445,7 @@ Internet-Draft                   QUIC-LB                       June 2020
 
 
 
-Duke & Banks            Expires 18 December 2020                [Page 8]
+Duke & Banks             Expires 1 January 2021                 [Page 8]
 
 Internet-Draft                   QUIC-LB                       June 2020
 
@@ -501,7 +501,7 @@ Internet-Draft                   QUIC-LB                       June 2020
 
 
 
-Duke & Banks            Expires 18 December 2020                [Page 9]
+Duke & Banks             Expires 1 January 2021                 [Page 9]
 
 Internet-Draft                   QUIC-LB                       June 2020
 
@@ -557,7 +557,7 @@ Internet-Draft                   QUIC-LB                       June 2020
 
 
 
-Duke & Banks            Expires 18 December 2020               [Page 10]
+Duke & Banks             Expires 1 January 2021                [Page 10]
 
 Internet-Draft                   QUIC-LB                       June 2020
 
@@ -613,7 +613,7 @@ Internet-Draft                   QUIC-LB                       June 2020
 
 
 
-Duke & Banks            Expires 18 December 2020               [Page 11]
+Duke & Banks             Expires 1 January 2021                [Page 11]
 
 Internet-Draft                   QUIC-LB                       June 2020
 
@@ -669,7 +669,7 @@ Internet-Draft                   QUIC-LB                       June 2020
 
 
 
-Duke & Banks            Expires 18 December 2020               [Page 12]
+Duke & Banks             Expires 1 January 2021                [Page 12]
 
 Internet-Draft                   QUIC-LB                       June 2020
 
@@ -725,7 +725,7 @@ Internet-Draft                   QUIC-LB                       June 2020
 
 
 
-Duke & Banks            Expires 18 December 2020               [Page 13]
+Duke & Banks             Expires 1 January 2021                [Page 13]
 
 Internet-Draft                   QUIC-LB                       June 2020
 
@@ -781,7 +781,7 @@ Internet-Draft                   QUIC-LB                       June 2020
 
 
 
-Duke & Banks            Expires 18 December 2020               [Page 14]
+Duke & Banks             Expires 1 January 2021                [Page 14]
 
 Internet-Draft                   QUIC-LB                       June 2020
 
@@ -837,7 +837,7 @@ Internet-Draft                   QUIC-LB                       June 2020
 
 
 
-Duke & Banks            Expires 18 December 2020               [Page 15]
+Duke & Banks             Expires 1 January 2021                [Page 15]
 
 Internet-Draft                   QUIC-LB                       June 2020
 
@@ -893,7 +893,7 @@ Internet-Draft                   QUIC-LB                       June 2020
 
 
 
-Duke & Banks            Expires 18 December 2020               [Page 16]
+Duke & Banks             Expires 1 January 2021                [Page 16]
 
 Internet-Draft                   QUIC-LB                       June 2020
 
@@ -949,7 +949,7 @@ Internet-Draft                   QUIC-LB                       June 2020
 
 
 
-Duke & Banks            Expires 18 December 2020               [Page 17]
+Duke & Banks             Expires 1 January 2021                [Page 17]
 
 Internet-Draft                   QUIC-LB                       June 2020
 
@@ -1005,7 +1005,7 @@ Internet-Draft                   QUIC-LB                       June 2020
 
 
 
-Duke & Banks            Expires 18 December 2020               [Page 18]
+Duke & Banks             Expires 1 January 2021                [Page 18]
 
 Internet-Draft                   QUIC-LB                       June 2020
 
@@ -1061,7 +1061,7 @@ Internet-Draft                   QUIC-LB                       June 2020
 
 
 
-Duke & Banks            Expires 18 December 2020               [Page 19]
+Duke & Banks             Expires 1 January 2021                [Page 19]
 
 Internet-Draft                   QUIC-LB                       June 2020
 
@@ -1117,7 +1117,7 @@ Internet-Draft                   QUIC-LB                       June 2020
 
 
 
-Duke & Banks            Expires 18 December 2020               [Page 20]
+Duke & Banks             Expires 1 January 2021                [Page 20]
 
 Internet-Draft                   QUIC-LB                       June 2020
 
@@ -1173,7 +1173,7 @@ Internet-Draft                   QUIC-LB                       June 2020
 
 
 
-Duke & Banks            Expires 18 December 2020               [Page 21]
+Duke & Banks             Expires 1 January 2021                [Page 21]
 
 Internet-Draft                   QUIC-LB                       June 2020
 
@@ -1229,7 +1229,7 @@ Internet-Draft                   QUIC-LB                       June 2020
 
 
 
-Duke & Banks            Expires 18 December 2020               [Page 22]
+Duke & Banks             Expires 1 January 2021                [Page 22]
 
 Internet-Draft                   QUIC-LB                       June 2020
 
@@ -1238,9 +1238,9 @@ Internet-Draft                   QUIC-LB                       June 2020
       (IP address, UDP port, client-generated destination Connection ID)
       remain constant for all packets sent on the same connection.
       While this document does not update the commitments in
-      [QUIC-INVARIANTS], the authors believe that the listed examples
-      are a likely set of constants that load balancers can use with
-      minimal risk of version-dependence.
+      [QUIC-INVARIANTS], the additional assumptions are minimal and
+      narrowly scoped, and provide a likely set of constants that load
+      balancers can use with minimal risk of version-dependence.
 
    If these assumptions are invalid, this specification is likely to
    lead to loss of packets that contain non-compliant DCIDs, and in
@@ -1285,7 +1285,7 @@ Internet-Draft                   QUIC-LB                       June 2020
 
 
 
-Duke & Banks            Expires 18 December 2020               [Page 23]
+Duke & Banks             Expires 1 January 2021                [Page 23]
 
 Internet-Draft                   QUIC-LB                       June 2020
 
@@ -1341,7 +1341,7 @@ Internet-Draft                   QUIC-LB                       June 2020
 
 
 
-Duke & Banks            Expires 18 December 2020               [Page 24]
+Duke & Banks             Expires 1 January 2021                [Page 24]
 
 Internet-Draft                   QUIC-LB                       June 2020
 
@@ -1397,7 +1397,7 @@ A.1.  Obfuscated Connection ID Algorithm
 
 
 
-Duke & Banks            Expires 18 December 2020               [Page 25]
+Duke & Banks             Expires 1 January 2021                [Page 25]
 
 Internet-Draft                   QUIC-LB                       June 2020
 
@@ -1453,7 +1453,7 @@ A.2.  Stream Cipher Connection ID Algorithm
 
 
 
-Duke & Banks            Expires 18 December 2020               [Page 26]
+Duke & Banks             Expires 1 January 2021                [Page 26]
 
 Internet-Draft                   QUIC-LB                       June 2020
 
@@ -1509,7 +1509,7 @@ A.3.  Block Cipher Connection ID Algorithm
 
 
 
-Duke & Banks            Expires 18 December 2020               [Page 27]
+Duke & Banks             Expires 1 January 2021                [Page 27]
 
 Internet-Draft                   QUIC-LB                       June 2020
 
@@ -1565,7 +1565,7 @@ C.2.  since-draft-ietf-quic-load-balancers-01
 
 
 
-Duke & Banks            Expires 18 December 2020               [Page 28]
+Duke & Banks             Expires 1 January 2021                [Page 28]
 
 Internet-Draft                   QUIC-LB                       June 2020
 
@@ -1621,7 +1621,7 @@ C.8.  Since draft-duke-quic-load-balancers-02
 
 
 
-Duke & Banks            Expires 18 December 2020               [Page 29]
+Duke & Banks             Expires 1 January 2021                [Page 29]
 
 Internet-Draft                   QUIC-LB                       June 2020
 
@@ -1677,4 +1677,4 @@ Authors' Addresses
 
 
 
-Duke & Banks            Expires 18 December 2020               [Page 30]
+Duke & Banks             Expires 1 January 2021                [Page 30]
