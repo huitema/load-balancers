@@ -5,8 +5,8 @@
 QUIC                                                             M. Duke
 Internet-Draft                                         F5 Networks, Inc.
 Intended status: Standards Track                                N. Banks
-Expires: 1 January 2021                                        Microsoft
-                                                            30 June 2020
+Expires: 2 January 2021                                        Microsoft
+                                                             1 July 2020
 
 
             QUIC-LB: Generating Routable QUIC Connection IDs
@@ -53,12 +53,12 @@ Status of This Memo
 
 
 
-Duke & Banks             Expires 1 January 2021                 [Page 1]
+Duke & Banks             Expires 2 January 2021                 [Page 1]
 
-Internet-Draft                   QUIC-LB                       June 2020
+Internet-Draft                   QUIC-LB                       July 2020
 
 
-   This Internet-Draft will expire on 1 January 2021.
+   This Internet-Draft will expire on 2 January 2021.
 
 Copyright Notice
 
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Duke & Banks             Expires 1 January 2021                 [Page 2]
+Duke & Banks             Expires 2 January 2021                 [Page 2]
 
-Internet-Draft                   QUIC-LB                       June 2020
+Internet-Draft                   QUIC-LB                       July 2020
 
 
        5.2.2.  Service Requirements  . . . . . . . . . . . . . . . .  15
@@ -165,9 +165,9 @@ Internet-Draft                   QUIC-LB                       June 2020
 
 
 
-Duke & Banks             Expires 1 January 2021                 [Page 3]
+Duke & Banks             Expires 2 January 2021                 [Page 3]
 
-Internet-Draft                   QUIC-LB                       June 2020
+Internet-Draft                   QUIC-LB                       July 2020
 
 
    QUIC allows servers (or load balancers) to designate an initial
@@ -221,9 +221,9 @@ Internet-Draft                   QUIC-LB                       June 2020
 
 
 
-Duke & Banks             Expires 1 January 2021                 [Page 4]
+Duke & Banks             Expires 2 January 2021                 [Page 4]
 
-Internet-Draft                   QUIC-LB                       June 2020
+Internet-Draft                   QUIC-LB                       July 2020
 
 
    In this document, these words will appear with that interpretation
@@ -277,9 +277,9 @@ Internet-Draft                   QUIC-LB                       June 2020
 
 
 
-Duke & Banks             Expires 1 January 2021                 [Page 5]
+Duke & Banks             Expires 2 January 2021                 [Page 5]
 
-Internet-Draft                   QUIC-LB                       June 2020
+Internet-Draft                   QUIC-LB                       July 2020
 
 
    QUIC-LB is relevant in the region between these extremes: when the
@@ -333,9 +333,9 @@ Internet-Draft                   QUIC-LB                       June 2020
 
 
 
-Duke & Banks             Expires 1 January 2021                 [Page 6]
+Duke & Banks             Expires 2 January 2021                 [Page 6]
 
-Internet-Draft                   QUIC-LB                       June 2020
+Internet-Draft                   QUIC-LB                       July 2020
 
 
    A Configuration Agent SHOULD NOT use a codepoint to represent a new
@@ -389,9 +389,9 @@ Internet-Draft                   QUIC-LB                       June 2020
 
 
 
-Duke & Banks             Expires 1 January 2021                 [Page 7]
+Duke & Banks             Expires 2 January 2021                 [Page 7]
 
-Internet-Draft                   QUIC-LB                       June 2020
+Internet-Draft                   QUIC-LB                       July 2020
 
 
    The algorithms differ in the complexity of configuration at both load
@@ -445,9 +445,9 @@ Internet-Draft                   QUIC-LB                       June 2020
 
 
 
-Duke & Banks             Expires 1 January 2021                 [Page 8]
+Duke & Banks             Expires 2 January 2021                 [Page 8]
 
-Internet-Draft                   QUIC-LB                       June 2020
+Internet-Draft                   QUIC-LB                       July 2020
 
 
 4.1.  Plaintext CID Algorithm
@@ -501,9 +501,9 @@ Internet-Draft                   QUIC-LB                       June 2020
 
 
 
-Duke & Banks             Expires 1 January 2021                 [Page 9]
+Duke & Banks             Expires 2 January 2021                 [Page 9]
 
-Internet-Draft                   QUIC-LB                       June 2020
+Internet-Draft                   QUIC-LB                       July 2020
 
 
    0                   1                   2                   3
@@ -557,9 +557,9 @@ Internet-Draft                   QUIC-LB                       June 2020
 
 
 
-Duke & Banks             Expires 1 January 2021                [Page 10]
+Duke & Banks             Expires 2 January 2021                [Page 10]
 
-Internet-Draft                   QUIC-LB                       June 2020
+Internet-Draft                   QUIC-LB                       July 2020
 
 
    Note also that not all Connection IDs are necessarily routable, as
@@ -613,9 +613,9 @@ Internet-Draft                   QUIC-LB                       June 2020
 
 
 
-Duke & Banks             Expires 1 January 2021                [Page 11]
+Duke & Banks             Expires 2 January 2021                [Page 11]
 
-Internet-Draft                   QUIC-LB                       June 2020
+Internet-Draft                   QUIC-LB                       July 2020
 
 
    The configuration agent also selects a nonce length and an 16-octet
@@ -669,9 +669,9 @@ Internet-Draft                   QUIC-LB                       June 2020
 
 
 
-Duke & Banks             Expires 1 January 2021                [Page 12]
+Duke & Banks             Expires 2 January 2021                [Page 12]
 
-Internet-Draft                   QUIC-LB                       June 2020
+Internet-Draft                   QUIC-LB                       July 2020
 
 
 4.4.  Block Cipher CID Algorithm
@@ -725,9 +725,9 @@ Internet-Draft                   QUIC-LB                       June 2020
 
 
 
-Duke & Banks             Expires 1 January 2021                [Page 13]
+Duke & Banks             Expires 2 January 2021                [Page 13]
 
-Internet-Draft                   QUIC-LB                       June 2020
+Internet-Draft                   QUIC-LB                       July 2020
 
 
 4.4.3.  Server Actions
@@ -781,9 +781,9 @@ Internet-Draft                   QUIC-LB                       June 2020
 
 
 
-Duke & Banks             Expires 1 January 2021                [Page 14]
+Duke & Banks             Expires 2 January 2021                [Page 14]
 
-Internet-Draft                   QUIC-LB                       June 2020
+Internet-Draft                   QUIC-LB                       July 2020
 
 
 5.1.  Common Requirements
@@ -837,9 +837,9 @@ Internet-Draft                   QUIC-LB                       June 2020
 
 
 
-Duke & Banks             Expires 1 January 2021                [Page 15]
+Duke & Banks             Expires 2 January 2021                [Page 15]
 
-Internet-Draft                   QUIC-LB                       June 2020
+Internet-Draft                   QUIC-LB                       July 2020
 
 
    0                   1                   2                   3
@@ -893,9 +893,9 @@ Internet-Draft                   QUIC-LB                       June 2020
 
 
 
-Duke & Banks             Expires 1 January 2021                [Page 16]
+Duke & Banks             Expires 2 January 2021                [Page 16]
 
-Internet-Draft                   QUIC-LB                       June 2020
+Internet-Draft                   QUIC-LB                       July 2020
 
 
    In inactive mode, the service MUST forward all packets that have no
@@ -949,9 +949,9 @@ Internet-Draft                   QUIC-LB                       June 2020
 
 
 
-Duke & Banks             Expires 1 January 2021                [Page 17]
+Duke & Banks             Expires 2 January 2021                [Page 17]
 
-Internet-Draft                   QUIC-LB                       June 2020
+Internet-Draft                   QUIC-LB                       July 2020
 
 
    0                   1                   2                   3
@@ -1005,9 +1005,9 @@ Internet-Draft                   QUIC-LB                       June 2020
 
 
 
-Duke & Banks             Expires 1 January 2021                [Page 18]
+Duke & Banks             Expires 2 January 2021                [Page 18]
 
-Internet-Draft                   QUIC-LB                       June 2020
+Internet-Draft                   QUIC-LB                       July 2020
 
 
    Opaque Data: The server may use this field to encode additional
@@ -1061,9 +1061,9 @@ Internet-Draft                   QUIC-LB                       June 2020
 
 
 
-Duke & Banks             Expires 1 January 2021                [Page 19]
+Duke & Banks             Expires 2 January 2021                [Page 19]
 
-Internet-Draft                   QUIC-LB                       June 2020
+Internet-Draft                   QUIC-LB                       July 2020
 
 
    For Obfuscated CID Routing, this consists of the Routing Bits,
@@ -1117,9 +1117,9 @@ Internet-Draft                   QUIC-LB                       June 2020
 
 
 
-Duke & Banks             Expires 1 January 2021                [Page 20]
+Duke & Banks             Expires 2 January 2021                [Page 20]
 
-Internet-Draft                   QUIC-LB                       June 2020
+Internet-Draft                   QUIC-LB                       July 2020
 
 
     uint2    config_rotation_bits;
@@ -1173,9 +1173,9 @@ Internet-Draft                   QUIC-LB                       June 2020
 
 
 
-Duke & Banks             Expires 1 January 2021                [Page 21]
+Duke & Banks             Expires 2 January 2021                [Page 21]
 
-Internet-Draft                   QUIC-LB                       June 2020
+Internet-Draft                   QUIC-LB                       July 2020
 
 
    If each load balancer is assigned a range of server IDs that is a
@@ -1229,9 +1229,9 @@ Internet-Draft                   QUIC-LB                       June 2020
 
 
 
-Duke & Banks             Expires 1 January 2021                [Page 22]
+Duke & Banks             Expires 2 January 2021                [Page 22]
 
-Internet-Draft                   QUIC-LB                       June 2020
+Internet-Draft                   QUIC-LB                       July 2020
 
 
    *  In this interval, some exposed fields (e.g.  UDP address and port,
@@ -1285,9 +1285,9 @@ Internet-Draft                   QUIC-LB                       June 2020
 
 
 
-Duke & Banks             Expires 1 January 2021                [Page 23]
+Duke & Banks             Expires 2 January 2021                [Page 23]
 
-Internet-Draft                   QUIC-LB                       June 2020
+Internet-Draft                   QUIC-LB                       July 2020
 
 
 9.2.  Attackers between the load balancer and server
@@ -1300,17 +1300,18 @@ Internet-Draft                   QUIC-LB                       June 2020
 
 9.3.  Limited configuration scope
 
-   A naive deployment of QUIC-LB in a cloud provider might use the same
+   A simple deployment of QUIC-LB in a cloud provider might use the same
    global QUIC-LB configuration across all its load balancers that route
    to customer servers.  An attacker could then simply become a
    customer, obtain the configuration, and then extract server IDs of
    other customers' connections at will.
 
-   To avoid this, the entities that manage load balancers that route to
-   mutually distrustful servers use a single configuration instance in
-   as narrow a deployment as possible.  A load balancer SHOULD NOT have
-   any QUIC-LB configuration relevant to a server to which it cannot
-   route.
+   To avoid this, when supporting mutually distrustful servers, each
+   QUIC-LB configuration instance is deployed in as narrow a set of load
+   balancers as possible.  The configuration agent SHOULD NOT assign or
+   distribute the same QUIC-LB cryptographic or obfuscation parameters
+   (e.g., key or routing mask) to servers that do not share a common
+   load balancer.
 
 9.4.  Stateless Reset Oracle
 
@@ -1340,10 +1341,9 @@ Internet-Draft                   QUIC-LB                       June 2020
 
 
 
-
-Duke & Banks             Expires 1 January 2021                [Page 24]
+Duke & Banks             Expires 2 January 2021                [Page 24]
 
-Internet-Draft                   QUIC-LB                       June 2020
+Internet-Draft                   QUIC-LB                       July 2020
 
 
    [QUIC-TRANSPORT]
@@ -1397,9 +1397,9 @@ A.1.  Obfuscated Connection ID Algorithm
 
 
 
-Duke & Banks             Expires 1 January 2021                [Page 25]
+Duke & Banks             Expires 2 January 2021                [Page 25]
 
-Internet-Draft                   QUIC-LB                       June 2020
+Internet-Draft                   QUIC-LB                       July 2020
 
 
    cid 542dc4c09e2d548e508dc825bbbca991c131 sid 8
@@ -1453,9 +1453,9 @@ A.2.  Stream Cipher Connection ID Algorithm
 
 
 
-Duke & Banks             Expires 1 January 2021                [Page 26]
+Duke & Banks             Expires 2 January 2021                [Page 26]
 
-Internet-Draft                   QUIC-LB                       June 2020
+Internet-Draft                   QUIC-LB                       July 2020
 
 
    cr_bits 0x1 length_self_encoding: n nonce_len 9 sid_len 2 key
@@ -1509,9 +1509,9 @@ A.3.  Block Cipher Connection ID Algorithm
 
 
 
-Duke & Banks             Expires 1 January 2021                [Page 27]
+Duke & Banks             Expires 2 January 2021                [Page 27]
 
-Internet-Draft                   QUIC-LB                       June 2020
+Internet-Draft                   QUIC-LB                       July 2020
 
 
    cid: 1378e44f874642624fa69e7b4aec15a2a678b8b5 sid: 48
@@ -1565,9 +1565,9 @@ Appendix C.  Change Log
 
 
 
-Duke & Banks             Expires 1 January 2021                [Page 28]
+Duke & Banks             Expires 2 January 2021                [Page 28]
 
-Internet-Draft                   QUIC-LB                       June 2020
+Internet-Draft                   QUIC-LB                       July 2020
 
 
 C.1.  since-draft-ietf-quic-load-balancers-02
@@ -1621,9 +1621,9 @@ C.7.  Since draft-duke-quic-load-balancers-03
 
 
 
-Duke & Banks             Expires 1 January 2021                [Page 29]
+Duke & Banks             Expires 2 January 2021                [Page 29]
 
-Internet-Draft                   QUIC-LB                       June 2020
+Internet-Draft                   QUIC-LB                       July 2020
 
 
    *  Added new Plaintext CID algorithm
@@ -1677,4 +1677,4 @@ Authors' Addresses
 
 
 
-Duke & Banks             Expires 1 January 2021                [Page 30]
+Duke & Banks             Expires 2 January 2021                [Page 30]
