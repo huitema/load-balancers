@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2020-06-30T22:13:22.392281+00:00",
+  "timestamp": "2020-07-01T16:57:02.460147+00:00",
   "repo": "quicwg/load-balancers",
   "labels": [
     {
@@ -446,15 +446,15 @@
       "id": "MDU6SXNzdWU2MjMzMDQxNDM=",
       "title": "Tweak non-compliant DCID recommendation",
       "url": "https://github.com/quicwg/load-balancers/issues/22",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "martinduke",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "@martinthomson sayeth on the list:\r\n\r\n>  That routing will rely on the stability of a subset of fields.  I would select from (source IP, source port, destination IP, destination port, DCID) and no others.\r\n\r\nIt would be useful to include something like this in Section 4 as a non-normative hint on what fields to use, since our hint currently consists of an example that just uses the DCID.\r\n\r\nSimilarly, make that assumption clearer in Section 8.\r\n",
       "createdAt": "2020-05-22T15:50:03Z",
-      "updatedAt": "2020-05-22T22:08:33Z",
-      "closedAt": null,
+      "updatedAt": "2020-07-01T00:47:53Z",
+      "closedAt": "2020-07-01T00:47:53Z",
       "comments": [
         {
           "author": "DavidSchinazi",
@@ -1262,24 +1262,26 @@
       "id": "MDExOlB1bGxSZXF1ZXN0NDIzMzY1Mzgw",
       "title": "Update text on Version Independence",
       "url": "https://github.com/quicwg/load-balancers/pull/25",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "martinduke",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "Carefully phrased language that considers @martinthomson 's suggestion that SCID may not be stable across versions, and tries to suggest (IP, port, DCID) as a suitable long header hash without making promises on behalf of quic-invariants.\r\n\r\nFixes #22.",
       "createdAt": "2020-05-26T18:01:03Z",
-      "updatedAt": "2020-06-30T03:48:19Z",
+      "updatedAt": "2020-07-01T00:47:55Z",
       "baseRepository": "quicwg/load-balancers",
       "baseRefName": "master",
       "baseRefOid": "1033d06b11f1fffcde778b40a0eed67748e6da6e",
       "headRepository": "quicwg/load-balancers",
       "headRefName": "noncompliant",
-      "headRefOid": "3188d36de23b645c6a7281ee9e85e747d795ced2",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "e17243ad2971011250aface9268d82a4750c0984",
+      "closedAt": "2020-07-01T00:47:53Z",
+      "mergedAt": "2020-07-01T00:47:53Z",
+      "mergedBy": "martinduke",
+      "mergeCommit": {
+        "oid": "1db2dd1ac29a04eb368a82cfbb7e662999fdfb46"
+      },
       "comments": [],
       "reviews": [
         {
@@ -1298,19 +1300,19 @@
               "originalPosition": 8,
               "body": "What interval?\r\n\r\n (I think that the list structure is working against you here.)",
               "createdAt": "2020-05-27T01:44:04Z",
-              "updatedAt": "2020-06-16T22:11:17Z"
+              "updatedAt": "2020-07-01T00:47:26Z"
             },
             {
               "originalPosition": 9,
               "body": "Don't use \"for example\" here.  You want to be precise.",
               "createdAt": "2020-05-27T01:44:41Z",
-              "updatedAt": "2020-06-16T22:11:17Z"
+              "updatedAt": "2020-07-01T00:47:26Z"
             },
             {
               "originalPosition": 10,
               "body": "for all packets sent on the same connection.",
               "createdAt": "2020-05-27T01:45:10Z",
-              "updatedAt": "2020-06-16T22:11:17Z"
+              "updatedAt": "2020-07-01T00:47:26Z"
             }
           ]
         },
@@ -1330,7 +1332,60 @@
               "originalPosition": 39,
               "body": "As this aims to represent IETF consensus, we should be able to say something more concrete about this than \"the authors believe\" implies.\r\n\r\nI think that what can be said is that these assumption are made by this document and while it is not guaranteed that *every* QUIC version will conform to these assumptions, they are minimal and narrowly scoped.  This means that it is likely - and indeed desirable - for new versions of QUIC to conform to these expectations.  By doing so, a new version of QUIC will be able to use load balancers that conform to the design in this document.\r\n\r\nThat's a fairly compelling trade: make a small additional allowance to get all this stuff.  But it also means that you aren't constraining the design of QUIC versions that might not need or want involvement by a load balancer.",
               "createdAt": "2020-06-30T03:48:18Z",
-              "updatedAt": "2020-06-30T03:48:19Z"
+              "updatedAt": "2020-07-01T00:47:26Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDQwNDMwMDEy",
+          "commit": {
+            "abbreviatedOid": "aec1a54"
+          },
+          "author": "martinduke",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-06-30T22:30:00Z",
+          "updatedAt": "2020-06-30T22:30:00Z",
+          "comments": [
+            {
+              "originalPosition": 39,
+              "body": "OK, have another look.",
+              "createdAt": "2020-06-30T22:30:00Z",
+              "updatedAt": "2020-07-01T00:47:26Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDQwNDMxMDA0",
+          "commit": {
+            "abbreviatedOid": "aec1a54"
+          },
+          "author": "nibanks",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2020-06-30T22:32:21Z",
+          "updatedAt": "2020-06-30T22:32:21Z",
+          "comments": []
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDQwNDc0NjAy",
+          "commit": {
+            "abbreviatedOid": "aec1a54"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2020-07-01T00:39:15Z",
+          "updatedAt": "2020-07-01T00:39:24Z",
+          "comments": [
+            {
+              "originalPosition": 3,
+              "body": "```suggestion\r\npackets sent on the same connection.\r\n\r\nWhile this document does not update the\r\n```\r\n\r\nI say that because I think that this statement applies to the entire list.",
+              "createdAt": "2020-07-01T00:39:15Z",
+              "updatedAt": "2020-07-01T00:47:26Z"
             }
           ]
         }
@@ -1390,18 +1445,33 @@
       "labels": [],
       "body": "Added two sections to Security Considerations (Stateless Reset Oracle and Local Configurations Only). Fixes #9 and #27.",
       "createdAt": "2020-06-16T22:53:50Z",
-      "updatedAt": "2020-06-30T22:12:58Z",
+      "updatedAt": "2020-07-01T16:56:31Z",
       "baseRepository": "quicwg/load-balancers",
       "baseRefName": "master",
       "baseRefOid": "1033d06b11f1fffcde778b40a0eed67748e6da6e",
       "headRepository": "quicwg/load-balancers",
       "headRefName": "more-security",
-      "headRefOid": "e5303161780fe67427f0074aa2ff756a95a6139e",
+      "headRefOid": "50c97311114cd71773933c9db4e29c1349edb3b5",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
-      "comments": [],
+      "comments": [
+        {
+          "author": "martinthomson",
+          "authorAssociation": "MEMBER",
+          "body": "Can you speak a little about your reasoning for the recent changes?  If this attack is limited to extracting the identity of server instances for other co-hosted entities, that's probably OK, but I'm having trouble connecting the SHOULD here with the preceding text.",
+          "createdAt": "2020-07-01T00:42:46Z",
+          "updatedAt": "2020-07-01T00:42:46Z"
+        },
+        {
+          "author": "martinduke",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Sure. If an attacker has the same QUIC-LB config as the victim, then it can extract the server mapping, which defeats the whole point of the spec. Obviously, an LB must have the QUIC-LB config for servers it routes to. If I'm an attacker within that group of servers I may already see the packet headers that give away the server mapping, so there's little added linkability here (though there is a little).\r\n\r\nThe moment I share configuration among multiple server pools, I'm expanding the number of entities with access to the config, for no operational benefit except to make the administrator's life easier. In the absurd limit, all of AWS has the same QUIC-LB config, and essentially everyone can extract the server mapping from any CID that goes to AWS.",
+          "createdAt": "2020-07-01T02:07:58Z",
+          "updatedAt": "2020-07-01T02:07:58Z"
+        }
+      ],
       "reviews": [
         {
           "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDMyMDA2MTAw",
@@ -1419,7 +1489,7 @@
               "originalPosition": 7,
               "body": "I don't think that the scope of this is very clear.  If the idea is that the cloud provider - the one who provides the load balancer - provides the same configuration to mutually distrustful customers, then there is a very important point to make.  But I'm not sure that this is clear from the text here.  \"enterprise\" isn't well connected to \"cloud provider\".",
               "createdAt": "2020-06-17T01:56:54Z",
-              "updatedAt": "2020-06-30T22:12:58Z"
+              "updatedAt": "2020-07-01T16:56:31Z"
             }
           ]
         },
@@ -1439,7 +1509,7 @@
               "originalPosition": 7,
               "body": "OK, I got rid of the word 'enterprise' and I think it's clearer now.",
               "createdAt": "2020-06-17T16:44:53Z",
-              "updatedAt": "2020-06-30T22:12:58Z"
+              "updatedAt": "2020-07-01T16:56:31Z"
             }
           ]
         },
@@ -1459,9 +1529,42 @@
               "originalPosition": 14,
               "body": "\"as narrow as possible\" is not really going to achieve our security goals.  The requirement (and it's a requirement not merely a desideratum) is that mutually distrustful entities cannot acquire information that might be used to mount denial of service on each other.",
               "createdAt": "2020-06-30T01:03:12Z",
-              "updatedAt": "2020-06-30T22:12:58Z"
+              "updatedAt": "2020-07-01T16:56:31Z"
             }
           ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDQwNDIyODMz",
+          "commit": {
+            "abbreviatedOid": "e530316"
+          },
+          "author": "martinduke",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-06-30T22:13:26Z",
+          "updatedAt": "2020-06-30T22:13:27Z",
+          "comments": [
+            {
+              "originalPosition": 14,
+              "body": "OK, I've rephrased it to be a bit more restrictive. How do you like it?",
+              "createdAt": "2020-06-30T22:13:26Z",
+              "updatedAt": "2020-07-01T16:56:31Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDQwNDMxODYw",
+          "commit": {
+            "abbreviatedOid": "e530316"
+          },
+          "author": "nibanks",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2020-06-30T22:34:21Z",
+          "updatedAt": "2020-06-30T22:34:21Z",
+          "comments": []
         }
       ]
     },
